@@ -27,6 +27,16 @@ For the full technical reference, see [`docs/architecture.md`](docs/architecture
 
 No Docker, no cloud account, no database server needed.
 
+### Installing `uv`
+
+The recommended one-liner (`irm https://astral.sh/uv/install.ps1 | iex`) may be blocked by corporate proxies that reject script downloads (e.g. Zscaler). If so, install `uv` from PyPI with the `pip` that ships with Python — this route pulls a normal wheel and is not blocked:
+
+```powershell
+python -m pip install --user uv
+```
+
+If `uv` isn't found afterward, add pip's user Scripts directory to your PATH (shown by `python -c "import site; print(site.USER_BASE)"`, then append `\PythonXYZ\Scripts`). The bundled `tasks.ps1` also falls back to `python -m uv` automatically if the `uv` command isn't on PATH.
+
 ---
 
 ## Setup (3 Commands)
@@ -80,6 +90,12 @@ make demo    # run the app (API + UI)
 make test    # run pytest + ruff lint
 make reset   # wipe SQLite DB, FAISS index, audit log (keeps synthetic data)
 make clean   # full clean — also regenerates synthetic data from scratch
+```
+
+**On Windows without `make`?** Use the bundled PowerShell equivalent — same verbs, no extra install (see decision log D-031):
+
+```powershell
+./tasks.ps1 setup   # ./tasks.ps1 seed | demo | test | reset | clean
 ```
 
 ---

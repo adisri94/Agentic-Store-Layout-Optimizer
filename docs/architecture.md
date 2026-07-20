@@ -929,6 +929,8 @@ clean:   ## Full clean including Parquet (forces regeneration)
 
 **Contract:** these command names must not change. Team members will memorize them.
 
+**Windows equivalent (D-031):** A root-level `tasks.ps1` mirrors these exact verbs for Windows users who don't have `make` installed — `./tasks.ps1 setup`, `./tasks.ps1 seed`, etc. Same verb names, no extra install. The Makefile remains the cross-platform/CI reference.
+
 ---
 
 # 17. Known Non-Goals (Do Not Build in Phase 1)

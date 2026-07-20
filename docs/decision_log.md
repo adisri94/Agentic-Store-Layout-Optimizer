@@ -816,6 +816,32 @@ The 3 consolidated services are:
 
 ---
 
+## D-031 · Windows-Native Task Runner (`tasks.ps1`)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 20 Jul 2026 |
+| **Category** | Technology · Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Add a PowerShell task runner (`tasks.ps1`) at the repo root that mirrors the six canonical Makefile targets (`setup`, `seed`, `demo`, `test`, `reset`, `clean`), invoked as `./tasks.ps1 <verb>`. The Makefile contract (`architecture.md` §16) is **augmented, not replaced** — the verb names remain identical across both entry points.
+
+**Rationale:**
+- The builder's environment is Windows, where `make` is not installed by default; installing GnuWin32/Chocolatey `make` adds a tool to obtain for no functional gain.
+- A PowerShell script requires **zero extra installs** — `powershell.exe` ships with Windows.
+- Keeping the same verb names preserves the muscle-memory contract; only the invocation prefix differs (`./tasks.ps1 setup` vs `make setup`).
+
+**Alternatives Considered:**
+- *Install `make` on Windows* — rejected: an extra dependency to obtain and document, contrary to the low-friction, laptop-first posture (D-010).
+- *Drop the Makefile, keep only `tasks.ps1`* — rejected: the Makefile stays as the cross-platform/CI reference and the documented contract; this is an additive convenience for Windows.
+- *Run raw `uv` commands each time* — rejected: loses the memorable, documented command names.
+
+**Impact:** New `tasks.ps1` at repo root; `architecture.md` §16 and `README.md` note the PowerShell equivalent. Team members on macOS/Linux (or with `make` installed) continue to use `make`; the `Makefile` itself is delivered in Sprint 1 alongside the first runnable code.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.
