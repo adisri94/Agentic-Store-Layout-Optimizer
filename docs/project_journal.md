@@ -154,6 +154,21 @@ Focus: establish the repository, the authoritative documentation set, and the so
 
 ---
 
+### `76982a6` — Journal: file 0ca715b entry into Foundation sprint
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-20 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Foundation |
+
+**Files changed:**
+- `docs/project_journal.md` — modified (+19)
+
+**Summary:** Housekeeping commit that moved the auto-captured entry for `0ca715b` out of the Auto-Captured zone and into the Foundation Commit Log with a written summary — the first exercise of the filing half of the journaling workflow.
+
+---
+
 ## Sprint 1 — Core MBA + #9 Explainability & Governance
 
 _No commits yet. Entries will be added here as Sprint 1 work lands on `main`._
