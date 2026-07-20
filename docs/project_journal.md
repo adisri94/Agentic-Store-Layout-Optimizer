@@ -135,6 +135,25 @@ Focus: establish the repository, the authoritative documentation set, and the so
 
 ---
 
+### `0ca715b` — Add project journal and post-commit journaling hook
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-20 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Foundation |
+
+**Files changed:**
+- `.githooks/post-commit` — new file (+65)
+- `Claude.md` — modified (+1)
+- `docs/architecture.md` — modified (+2)
+- `docs/project_journal.md` — new file (+181)
+- **Total:** 4 files, +249
+
+**Summary:** Created this development/commit journal documenting all Foundation-sprint commits to date, with a maintenance rule and empty Sprint 1–5 sections. Added the `post-commit` hook (`.githooks/post-commit`, activated via `core.hooksPath`) that auto-captures every commit's SHA, date, author, subject, and file stats into the Auto-Captured section for filing. Registered `project_journal.md` in the `CLAUDE.md` and `architecture.md` doc listings. This commit was itself auto-captured by the hook it introduced, then filed here.
+
+---
+
 ## Sprint 1 — Core MBA + #9 Explainability & Governance
 
 _No commits yet. Entries will be added here as Sprint 1 work lands on `main`._
