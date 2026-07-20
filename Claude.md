@@ -18,7 +18,7 @@ If any two documents in this repo disagree, resolve the conflict in this order:
 
 1. **`docs/decision_log.md`** — the project journal. Every material decision, with rationale and rejected alternatives. If you are unsure whether something is allowed, check here first.
 2. **`docs/architecture.md`** — the detailed, LLM-facing architecture reference. Directory structure, layer rules, service contracts, dependency list, naming conventions. This file (`CLAUDE.md`) is a summary of it — always defer to `architecture.md` for specifics.
-3. **`docs/data_contract.md`** and **`docs/demo_script.md`** — supporting detail on data schemas and demo narrative. Useful for context, not for architecture decisions.
+3. **`docs/data_contract.md`**, **`docs/demo_script.md`**, and **`docs/governance_charter.md`** — supporting detail on data schemas, demo narrative, and the plain-language governance rulebook. Useful for context, not for architecture decisions. Note: `governance_charter.md` states *what* every recommendation must never violate (the business policy behind principle #5 and Enhancement #9); `architecture.md` §10 states *how* it's enforced in code.
 4. **Product Vision One-Pager / Enhancement Deep-Dive** — business narrative documents. Useful for *why* a feature matters and its business value, but if either ever mentions a technology not listed in Section 7 below, **ignore that mention** and use the locked stack instead.
 
 **Rule of thumb:** business documents describe the product's value and scope; `decision_log.md` and `architecture.md` describe what to actually build. When in doubt, build what's locked, not what sounds fancier.
@@ -75,7 +75,7 @@ store-layout-optimizer/
 ├── platform/                  # L4 — LLM client, data access, vector store, graph store, config
 ├── data/                      # L5 — SQLite, Parquet (data/samples/), FAISS, JSONL audit log
 ├── tests/                     # pytest, mirrors services/ + platform/
-└── docs/                      # architecture.md, decision_log.md, data_contract.md, demo_script.md, production_mapping.md
+└── docs/                      # architecture.md, decision_log.md, data_contract.md, demo_script.md, governance_charter.md, production_mapping.md
 ```
 
 **Layer rule:** a layer may only call the layer directly below it. UI never calls Services directly. Services never touch the Data layer directly — always go through `platform/data_access.py`. Full call-matrix in `architecture.md` §3.2.
@@ -192,4 +192,5 @@ When asked to build a feature, work through it as one vertical slice at a time (
 | `docs/decision_log.md` | Why any given choice was made; what alternatives were rejected and why |
 | `docs/data_contract.md` | Field-level schema for each of the 6 data domains |
 | `docs/demo_script.md` | Prospect-facing walkthrough — useful for understanding the "story" a feature needs to tell |
+| `docs/governance_charter.md` | Business-facing governance rulebook — the policy rules (POL-001–005), explainability standard, fairness commitments, and audit/override rules every recommendation must satisfy |
 | `docs/production_mapping.md` | How local components would map to cloud in a future Phase 2 |

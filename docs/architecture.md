@@ -13,7 +13,7 @@
 | **Version** | 1.0 |
 | **Owner** | Aditya Srivastava, Senior Consultant, Cognizant |
 | **Last Updated** | 07 July 2026 |
-| **Related Docs** | `decision_log.md` · `data_contract.md` · `demo_script.md` · `production_mapping.md` |
+| **Related Docs** | `decision_log.md` · `data_contract.md` · `demo_script.md` · `governance_charter.md` · `production_mapping.md` |
 
 ---
 
@@ -156,6 +156,7 @@ store-layout-optimizer/
 │   ├── data_contract.md         # Full data product contract
 │   ├── decision_log.md          # Project journal
 │   ├── demo_script.md           # Prospect walkthrough
+│   ├── governance_charter.md    # Business-facing governance rulebook (policy for #9)
 │   └── production_mapping.md    # Local → cloud mapping
 │
 ├── logs/                        # App logs (gitignored)
@@ -1001,6 +1002,7 @@ Referenced from `decision_log.md`:
 | `decision_log.md` | Why decisions were made |
 | `data_contract.md` | Full field-level schemas per data domain |
 | `demo_script.md` | How to demo the tool to prospects |
+| `governance_charter.md` | Business-facing governance rulebook — the policy every recommendation must satisfy (the *what* behind Section 10's *how*) |
 | `production_mapping.md` | How each local component maps to cloud in Phase 2 |
 | `README.md` | Human setup guide (3 commands) |
 
