@@ -193,4 +193,5 @@ When asked to build a feature, work through it as one vertical slice at a time (
 | `docs/data_contract.md` | Field-level schema for each of the 6 data domains |
 | `docs/demo_script.md` | Prospect-facing walkthrough — useful for understanding the "story" a feature needs to tell |
 | `docs/governance_charter.md` | Business-facing governance rulebook — the policy rules (POL-001–005), explainability standard, fairness commitments, and audit/override rules every recommendation must satisfy |
+| `docs/project_journal.md` | Development/commit journal — a chronological, per-commit record of what was actually built each sprint (distinct from `decision_log.md`, which records *why* decisions were made) |
 | `docs/production_mapping.md` | How local components would map to cloud in a future Phase 2 |

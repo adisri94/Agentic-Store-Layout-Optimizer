@@ -1,0 +1,65 @@
+#!/usr/bin/env sh
+#
+# post-commit hook — Project Journal enforcement.
+#
+# Auto-captures every commit into docs/project_journal.md under the
+# "<!-- JOURNAL:AUTO -->" marker: short SHA, date, author, subject, and
+# files changed. After committing, file the captured entry into the correct
+# sprint section and replace the auto-note with a plain-English summary,
+# then commit the journal update.
+#
+# Activation (per clone): git config core.hooksPath .githooks
+#
+set -eu
+
+JOURNAL="docs/project_journal.md"
+MARKER="<!-- JOURNAL:AUTO -->"
+
+# Nothing to do if the journal or marker is absent.
+[ -f "$JOURNAL" ] || exit 0
+grep -q "$MARKER" "$JOURNAL" || exit 0
+
+FULL=$(git rev-parse HEAD)
+
+# Idempotent: skip if this exact commit is already recorded anywhere.
+if grep -q "commit:$FULL" "$JOURNAL"; then
+  exit 0
+fi
+
+SHORT=$(git rev-parse --short HEAD)
+DATE=$(git show -s --format=%ad --date=format:'%Y-%m-%d' HEAD)
+AUTHOR=$(git show -s --format='%an <%ae>' HEAD)
+SUBJECT=$(git show -s --format=%s HEAD)
+
+ENTRY_FILE=$(mktemp)
+TMP=$(mktemp)
+
+{
+  echo ""
+  echo "### auto: \`$SHORT\` — $SUBJECT"
+  echo "<!-- commit:$FULL -->"
+  echo ""
+  echo "- **Date:** $DATE"
+  echo "- **Author:** $AUTHOR"
+  echo "- **Files changed:**"
+  echo ""
+  echo '```'
+  git show --stat --format='' HEAD | sed '/^[[:space:]]*$/d'
+  echo '```'
+  echo ""
+  echo "_Auto-captured. File into the correct sprint section above and replace this line with a plain-English summary._"
+} > "$ENTRY_FILE"
+
+# Insert the entry immediately after the marker line.
+awk -v marker="$MARKER" -v ef="$ENTRY_FILE" '
+  { print }
+  index($0, marker) && !done {
+    while ((getline line < ef) > 0) print line
+    close(ef)
+    done = 1
+  }
+' "$JOURNAL" > "$TMP" && mv "$TMP" "$JOURNAL"
+
+rm -f "$ENTRY_FILE"
+
+echo "📔 project_journal.md: auto-captured commit $SHORT — file it into the right sprint, then commit the journal update."

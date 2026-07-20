@@ -157,6 +157,7 @@ store-layout-optimizer/
 │   ├── decision_log.md          # Project journal
 │   ├── demo_script.md           # Prospect walkthrough
 │   ├── governance_charter.md    # Business-facing governance rulebook (policy for #9)
+│   ├── project_journal.md       # Development/commit journal (per-sprint build record)
 │   └── production_mapping.md    # Local → cloud mapping
 │
 ├── logs/                        # App logs (gitignored)
@@ -1003,6 +1004,7 @@ Referenced from `decision_log.md`:
 | `data_contract.md` | Full field-level schemas per data domain |
 | `demo_script.md` | How to demo the tool to prospects |
 | `governance_charter.md` | Business-facing governance rulebook — the policy every recommendation must satisfy (the *what* behind Section 10's *how*) |
+| `project_journal.md` | Development/commit journal — chronological, per-commit record of what was built each sprint |
 | `production_mapping.md` | How each local component maps to cloud in Phase 2 |
 | `README.md` | Human setup guide (3 commands) |
 
