@@ -171,10 +171,13 @@ Per D-025. Each sprint should leave `main` demo-ready — build one working, dem
 
 When asked to build a feature, work through it as one vertical slice at a time (e.g., "Sprint 1: get one basket → one rule → one governed recommendation working end to end") rather than building every layer in parallel.
 
+**Sprint backlog is binding.** Each sprint has an approved backlog in `docs/` (e.g. `docs/sprint_1_backlog.md`) defining the user stories, acceptance criteria, and test cases for that sprint. When building sprint work you **must** implement exactly those stories — satisfy their acceptance criteria and write the listed test cases. Do not add functionality outside the backlog (scope creep) or leave a story partially done. If a needed change isn't covered by the backlog, stop and flag it so the backlog (and, if material, `decision_log.md`) can be updated before proceeding.
+
 ---
 
 ## 11. Quick Checklist Before Writing Any Code
 
+0. Is this covered by an approved user story in the active sprint backlog (`docs/sprint_<N>_backlog.md`)? If not, stop and flag it before coding. (Section 10)
 1. Which layer does this belong to? (Section 5)
 2. Is the directory already defined? Use it — don't invent a new one.
 3. Does this produce a recommendation? If yes, route it through `governance.govern()`.
@@ -194,4 +197,5 @@ When asked to build a feature, work through it as one vertical slice at a time (
 | `docs/demo_script.md` | Prospect-facing walkthrough — useful for understanding the "story" a feature needs to tell |
 | `docs/governance_charter.md` | Business-facing governance rulebook — the policy rules (POL-001–005), explainability standard, fairness commitments, and audit/override rules every recommendation must satisfy |
 | `docs/project_journal.md` | Development/commit journal — a chronological, per-commit record of what was actually built each sprint (distinct from `decision_log.md`, which records *why* decisions were made) |
+| `docs/sprint_<N>_backlog.md` | Per-sprint backlog — the binding user stories, acceptance criteria, and test cases for the active sprint (e.g. `docs/sprint_1_backlog.md`). Development must implement exactly these stories (Section 10) |
 | `docs/production_mapping.md` | How local components would map to cloud in a future Phase 2 |

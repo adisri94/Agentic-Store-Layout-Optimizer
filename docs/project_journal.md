@@ -184,9 +184,29 @@ Focus: establish the repository, the authoritative documentation set, and the so
 
 ---
 
+### `8d1b55a` — Add Windows task runner (tasks.ps1) and log D-031
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-20 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Foundation |
+
+**Files changed:**
+- `tasks.ps1` — new file (+124)
+- `README.md` — modified (+16)
+- `docs/decision_log.md` — modified (+26; D-031)
+- `docs/architecture.md` — modified (+2)
+- `docs/project_journal.md` — modified (+15)
+- **Total:** 5 files, +183
+
+**Summary:** Added `tasks.ps1`, a Windows-native PowerShell task runner mirroring the Makefile verbs (`setup`/`seed`/`demo`/`test`/`reset`/`clean`) with a `uv` resolver that falls back to `python -m uv`. Logged D-031 and documented the PyPI `pip install --user uv` route in the README for proxy-restricted environments where the astral install script is blocked. Closes the Foundation-sprint toolchain gap (no `make` required on Windows).
+
+---
+
 ## Sprint 1 — Core MBA + #9 Explainability & Governance
 
-_No commits yet. Entries will be added here as Sprint 1 work lands on `main`._
+_Backlog locked 22 Jul 2026 (D-032, `sprint_1_backlog.md`). Entries will be added here as Sprint 1 work lands on `main`._
 
 Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governance wrapper (`services/governance/`) live from day one, and the first end-to-end vertical slice (one basket → one rule → one governed recommendation).
 

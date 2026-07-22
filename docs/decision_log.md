@@ -842,6 +842,37 @@ The 3 consolidated services are:
 
 ---
 
+## D-032 · Sprint 1 Backlog Locked for Development
+
+| Field | Value |
+|-------|-------|
+| **Date** | 22 Jul 2026 |
+| **Category** | Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Approve and **lock** the Sprint 1 backlog (`docs/sprint_1_backlog.md`) — 11 user stories (US-1.1 … US-1.11) across five epics (Data Foundation, MBA Core, Explainability & Governance, API, UI) with their acceptance criteria and test cases. Sprint 1 development must implement exactly these stories.
+
+**Rationale:**
+- Freezing scope before coding prevents scope creep and gives a clear, testable Definition of Done.
+- The backlog is fully traceable to `architecture.md`, `governance_charter.md` (POL-001–005), and `demo_script.md` Scenes 2–3.
+- Locking establishes the review-gate discipline (D-026) at the story level, not just the doc level.
+
+**Key confirmed scope points:**
+- US-1.4 rationale is **template-generated, no LLM call** in Sprint 1 (principle #7, mock-first); a flag-gated seam (`generate_narrative()`) allows an LLM narrative to be added in Sprint 4 without changing callers.
+- POL-003 / POL-004 return **"not-evaluated"** (never a false "pass") when brand/vendor config is absent.
+- Only the **POS Transactions** and **Product Master** data domains are generated this sprint; the other four are deferred to later sprints.
+- No FAISS vector store or NetworkX graph store in Sprint 1.
+
+**Alternatives Considered:**
+- *Begin coding without a locked backlog* — rejected: loses the acceptance-criteria contract and invites scope drift.
+- *Lock only high-level stories without test cases* — rejected: test cases are the objective Definition of Done.
+
+**Impact:** Any change to Sprint 1 scope after this point requires a new `D-XXX` entry before implementation. `CLAUDE.md` Section 10/11 already bind development to the active sprint backlog.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.
