@@ -308,6 +308,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ---
 
+### `8ee086a` — Add Sprint 1 plain-language review checklist
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (review) |
+
+**Files changed:** `docs/sprint_1_test_review.md` (+97), `docs/project_journal.md` (+14).
+
+**Summary:** Added a plain-language, non-technical Pass/Fail review checklist covering setup, automated tests, a UI walkthrough of both modes, trust/safety checks, the "not in Sprint 1" list, the known thin-evidence limitation, and a sign-off box — for the owner to review before Sprint 1 closure.
+
+---
+
 ## Sprint 2 — #1 Contextual Affinity + #6 Multi-Objective Optimizer
 
 _No commits yet._

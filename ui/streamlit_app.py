@@ -6,10 +6,20 @@ Sprint 1 ships two of the three modes: Category Manager and Admin/Governance.
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-from ui.api_client import health
-from ui.modes import admin_governance, category_manager
+# Streamlit runs this file by path, which puts the ui/ folder (not the project
+# root) on sys.path — so the `ui` package can't be imported. Add the repo root
+# before importing anything from `ui`.
+_REPO_ROOT = str(Path(__file__).resolve().parent.parent)
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+from ui.api_client import health  # noqa: E402
+from ui.modes import admin_governance, category_manager  # noqa: E402
 
 
 def main() -> None:
