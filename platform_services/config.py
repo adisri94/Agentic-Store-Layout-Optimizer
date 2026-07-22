@@ -29,6 +29,7 @@ class Settings(BaseSettings):
 
     anthropic_api_key: str = ""
     api_key: str = "demo-key"
+    api_base_url: str = "http://localhost:8000"
     llm_model: str = "claude-sonnet-4.5"
     data_dir: Path = Path("data")
     log_level: str = "INFO"

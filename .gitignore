@@ -23,6 +23,10 @@ data/audit.jsonl
 data/faiss_index/
 logs/
 
+# Sample Parquet: not committed yet (schema still settling — Sprint 1 decision).
+# Revisit committing via Git LFS (D-008) once the schema is stable.
+data/samples/*.parquet
+
 # OS / editor
 .DS_Store
 .idea/

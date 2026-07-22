@@ -41,7 +41,7 @@
 | Sprint | Focus | Status |
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
-| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1–US-1.9 done) |
+| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In review (US-1.1–US-1.11 done; awaiting sign-off) |
 | **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -277,6 +277,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 **Files changed:** 14 files, +777 / −4 — `services/governance/{explainability,policy_engine,audit_writer,__init__}.py`, `services/affinity_optimization/service.py`, `api/schemas.py`, governance tests.
 
 **Summary:** Built the governance epic. US-1.4 template rationale (no LLM, flag-gated seam). US-1.5 policy engine POL-001–005 (POL-003/004 return `not_evaluated`, never a false pass). US-1.6 append-only JSONL audit log with a sole writer. US-1.7 `govern()`/`get_audit_log()` and a governed `get_recommendations()` that returns only `GovernedRecommendation` (governance-in-path). 35 tests total.
+
+---
+
+### `75368f2` — Sprint 1 US-1.8–1.9: API layer (recommendations + audit endpoints)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (US-1.8, US-1.9) |
+
+**Files changed:** 12 files, +356 / −1 — `api/auth.py`, `api/main.py`, `api/routes/{health,recommendations,audit}.py`, `api/schemas.py`, `tests/integration/test_api.py`, `pyproject.toml` (+httpx).
+
+**Summary:** Added the FastAPI layer. `X-API-Key` auth (D-029), a standard error envelope, and endpoints `POST /api/v1/recommendations`, `GET /api/v1/audit/log`, `GET /api/v1/audit/{recommendation_id}`, `GET /health`. Added `httpx` as a test-only dev dependency for TestClient (D-034). 42 tests total (TC-1.8.x, TC-1.9.x).
 
 ---
 
