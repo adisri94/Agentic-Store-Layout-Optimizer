@@ -41,7 +41,7 @@
 | Sprint | Focus | Status |
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
-| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1–US-1.7 done) |
+| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1–US-1.9 done) |
 | **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -263,6 +263,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 - service/test scaffolding — **Total:** 10 files, +295
 
 **Summary:** Implemented the MBA engine (US-1.3): mines association rules via mlxtend (FP-Growth default, Apriori selectable), scored by lift/confidence/support, mapped to ranked `Recommendation` objects. Exposes raw mining only — no user-facing entry point, so nothing bypasses governance. Added `Recommendation` to `api/schemas.py` (with a `contributing_baskets` evidence field). Tests TC-1.3.1–1.3.6.
+
+---
+
+### `9c196f2` — Sprint 1 US-1.4–1.7: Explainability & Governance (#9)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (US-1.4–US-1.7) |
+
+**Files changed:** 14 files, +777 / −4 — `services/governance/{explainability,policy_engine,audit_writer,__init__}.py`, `services/affinity_optimization/service.py`, `api/schemas.py`, governance tests.
+
+**Summary:** Built the governance epic. US-1.4 template rationale (no LLM, flag-gated seam). US-1.5 policy engine POL-001–005 (POL-003/004 return `not_evaluated`, never a false pass). US-1.6 append-only JSONL audit log with a sole writer. US-1.7 `govern()`/`get_audit_log()` and a governed `get_recommendations()` that returns only `GovernedRecommendation` (governance-in-path). 35 tests total.
 
 ---
 

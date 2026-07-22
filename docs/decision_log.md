@@ -900,6 +900,30 @@ The 3 consolidated services are:
 
 ---
 
+## D-034 · Add `httpx` as a Test-Only Dependency
+
+| Field | Value |
+|-------|-------|
+| **Date** | 22 Jul 2026 |
+| **Category** | Technology · Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Add **`httpx`** to the `dev` dependency group (test-only). It is **not** a runtime dependency.
+
+**Rationale:**
+- FastAPI's `TestClient` (used for the US-1.8/US-1.9 API integration tests) is built on `httpx` in current Starlette versions; without it the tests cannot run.
+- It is confined to the `dev` group, so it never ships in the runtime environment — the locked runtime dependency list (architecture.md §12.1) is unchanged.
+
+**Alternatives Considered:**
+- *Test routes by calling functions directly (no HTTP layer)* — rejected: would not exercise auth, status codes, or the error envelope, which are explicit acceptance criteria (TC-1.8.2/1.8.3).
+- *Use `requests` against a live server* — rejected: heavier and flakier than the in-process `TestClient`.
+
+**Impact:** `pyproject.toml` dev group gains `httpx`. No change to runtime deps or §12.1.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.

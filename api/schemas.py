@@ -42,6 +42,20 @@ class Recommendation(BaseModel):
     context: dict = Field(default_factory=dict)
 
 
+class RecommendationRequest(BaseModel):
+    """Request body for ``POST /api/v1/recommendations``.
+
+    Attributes:
+        store_id: Store to scope transactions to (required).
+        category: Optional category filter (matched against the merch hierarchy).
+        top_k: Maximum number of recommendations to return.
+    """
+
+    store_id: str
+    category: str | None = None
+    top_k: int = 20
+
+
 class PolicyResult(BaseModel):
     """Outcome of a single governance policy check (POL-001–005).
 
