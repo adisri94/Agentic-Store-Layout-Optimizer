@@ -125,7 +125,7 @@ store-layout-optimizer/
 │       ├── policy_engine.py     # Bias checks, guardrails
 │       └── audit_writer.py      # JSONL append-only writer
 │
-├── platform/                    # Shared platform services (Layer 4)
+├── platform_services/                    # Shared platform services (Layer 4)
 │   ├── __init__.py
 │   ├── llm_client.py            # Anthropic Claude adapter (with mock fallback)
 │   ├── data_access.py           # SQLite + DuckDB + Parquet helpers
@@ -148,7 +148,7 @@ store-layout-optimizer/
 │
 ├── tests/                       # pytest test suite
 │   ├── __init__.py
-│   ├── unit/                    # Mirrors services/ + platform/ structure
+│   ├── unit/                    # Mirrors services/ + platform_services/ structure
 │   └── integration/             # End-to-end flow tests
 │
 ├── docs/                        # All markdown docs
@@ -179,7 +179,7 @@ The system is organized into **6 active layers** (Phase 1) plus a **deferred clo
 | **L1** | Presentation UI | `ui/` | Streamlit app, 3 modes |
 | **L2** | API Layer | `api/` | FastAPI, auth, request contracts |
 | **L3** | Consolidated Services | `services/` | Business logic — 3 services |
-| **L4** | Local Platform Services | `platform/` | LLM client, data access, vector, graph |
+| **L4** | Local Platform Services | `platform_services/` | LLM client, data access, vector, graph |
 | **L5** | Data Layer | `data/` | SQLite, Parquet, FAISS, JSONL |
 | **L6** | Local Runtime & Tooling | root files | Python, uv, Makefile, GitHub |
 | **L7** | *(Deferred)* Cloud & Enterprise | — | See `production_mapping.md` |
@@ -332,9 +332,9 @@ from services.affinity_optimization.contextual.bandits import LinUCBModel
 
 # 5. Platform Layer (Layer 4)
 
-Shared utilities used by all services. Located in `platform/`.
+Shared utilities used by all services. Located in `platform_services/`.
 
-## 5.1 LLM Client (`platform/llm_client.py`)
+## 5.1 LLM Client (`platform_services/llm_client.py`)
 
 **Purpose:** Single point of contact with the Anthropic Claude API.
 
@@ -365,7 +365,7 @@ class LLMClient:
 
 **Model:** `claude-sonnet-4.5` (default; overridable via `.env`)
 
-## 5.2 Data Access (`platform/data_access.py`)
+## 5.2 Data Access (`platform_services/data_access.py`)
 
 **Purpose:** Central helpers for SQLite operational reads/writes and DuckDB analytical queries.
 
@@ -384,7 +384,7 @@ def load_parquet(domain: str) -> pd.DataFrame:
 
 **Convention:** Never use raw `open()` on Parquet files or raw `sqlite3.connect()` in service code. Always go through `data_access.py`.
 
-## 5.3 Vector Store (`platform/vector_store.py`)
+## 5.3 Vector Store (`platform_services/vector_store.py`)
 
 **Purpose:** FAISS wrapper for product embeddings + RAG.
 
@@ -402,7 +402,7 @@ class VectorStore:
         """Load persisted index into memory (called on service startup)."""
 ```
 
-## 5.4 Graph Store (`platform/graph_store.py`)
+## 5.4 Graph Store (`platform_services/graph_store.py`)
 
 **Purpose:** Load and serve the NetworkX affinity graph.
 
@@ -420,7 +420,7 @@ class AffinityGraph:
         """Return the cross-channel lift score for a pair."""
 ```
 
-## 5.5 Config (`platform/config.py`)
+## 5.5 Config (`platform_services/config.py`)
 
 **Purpose:** Central place for environment variables and feature flags.
 
@@ -472,7 +472,7 @@ settings = Settings()
 
 ## 6.3 Rules for Data Access
 
-- ❌ Do not read Parquet files directly from services — go through `platform.data_access`
+- ❌ Do not read Parquet files directly from services — go through `platform_services.data_access`
 - ❌ Do not write to `audit.jsonl` from anywhere except `services/governance/audit_writer.py`
 - ✅ SQLite writes must go through parameterized queries (SQL injection protection)
 - ✅ Every synthetic data generation is deterministic when seeded (use `random.seed(42)`)
@@ -717,7 +717,7 @@ TOOLS = [
 
 If `settings.mock_llm=True` or `anthropic_api_key` is missing:
 - `LLMClient.complete()` returns pre-canned responses shaped like real Claude outputs
-- Mock responses live in `platform/llm_mocks.py`
+- Mock responses live in `platform_services/llm_mocks.py`
 - Log every mock use so demo audiences can be told when it's mock vs. live
 
 ---
@@ -837,7 +837,7 @@ tests/
 │   │   ├── affinity_optimization/
 │   │   ├── genai_vendor/
 │   │   └── governance/
-│   └── platform/
+│   └── platform_services/
 └── integration/
     ├── test_flow_recommendations.py
     ├── test_flow_planogram.py
@@ -906,7 +906,7 @@ def get_recommendations(store_id: str, top_k: int = 20) -> list[Recommendation]:
 
 ## 15.4 Logging
 
-- Use `structlog` (configured in `platform/config.py`)
+- Use `structlog` (configured in `platform_services/config.py`)
 - Never use `print()` in service or platform code
 - Log level convention:
   - `DEBUG` — deep tracing (LLM prompts, SQL queries)
@@ -975,8 +975,8 @@ Referenced from `decision_log.md`:
 
 1. Update `data/seed.py` to generate synthetic data for it
 2. Add schema to `data_contract.md`
-3. Add loader helper in `platform/data_access.py`
-4. Never bypass `platform/data_access.py` for reads
+3. Add loader helper in `platform_services/data_access.py`
+4. Never bypass `platform_services/data_access.py` for reads
 
 ---
 
@@ -989,7 +989,7 @@ Referenced from `decision_log.md`:
 3. **Match the naming convention** (Section 15)
 4. **Use only allowed dependencies** (Section 12)
 5. **Call `governance.govern()`** if producing recommendations (Section 4.4)
-6. **Access data only via `platform/data_access.py`** (Section 5.2)
+6. **Access data only via `platform_services/data_access.py`** (Section 5.2)
 7. **Add a unit test** in `tests/unit/` (Section 14)
 8. **Add a docstring** (Section 15.2)
 9. **Update `decision_log.md`** if introducing a material choice

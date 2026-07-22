@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+
+# Note: uv.lock IS committed (reproducible installs across machines).
+
+# Environment / secrets
+.env
+
+# Generated runtime data (kept out of git per architecture.md §2)
+data/app.db
+data/audit.jsonl
+data/faiss_index/
+logs/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

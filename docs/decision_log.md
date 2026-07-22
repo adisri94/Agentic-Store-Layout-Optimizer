@@ -873,6 +873,33 @@ The 3 consolidated services are:
 
 ---
 
+## D-033 · Rename Layer 4 Package `platform/` → `platform_services/`
+
+| Field | Value |
+|-------|-------|
+| **Date** | 22 Jul 2026 |
+| **Category** | Architecture · Technology |
+| **Status** | ✅ Accepted |
+
+**Decision:** Rename the Layer 4 (Local Platform Services) Python package from `platform/` to **`platform_services/`**. All references (imports, docs, tests) use the new name; the layer's conceptual name ("Local Platform Services") is unchanged.
+
+**Rationale:**
+- `platform` is a **Python standard-library module**. A top-level `platform/` package on the import path shadows it.
+- The failure is not theoretical: `pandas` → `numpy` imports the stdlib `platform` at import time (`platform.machine()`); with our package shadowing it, numpy — and therefore nearly every dependency — fails to import. The app and test suite would not run.
+- A `src/` layout does not fix this: the collision is on the import **name** `platform`, regardless of directory nesting.
+
+**Alternatives Considered:**
+- *Keep `platform/`* — rejected: breaks imports across the dependency tree (demonstrated during Sprint 1 setup).
+- *`src/` layout keeping the name* — rejected: does not resolve the name collision.
+- *`core/`* — rejected: loses the explicit "platform" wording the docs use for Layer 4.
+- *`platform_svc/`* — considered; `platform_services` chosen for clarity.
+
+**Impact:** `architecture.md` (§2, §3.1, §5, §6.3, §18) and `CLAUDE.md` (§5, §6, §8) updated to `platform_services/`. Tests mirror `services/` + `platform_services/`. The `sprint_1_backlog.md` US-1.2 paths updated accordingly.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.

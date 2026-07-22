@@ -1,0 +1,69 @@
+[project]
+name = "store-layout-optimizer"
+version = "0.1.0"
+description = "Local-first Store Layout (Product Placement) Optimizer demo — MBA + contextual AI, GenAI, omnichannel, governed recommendations."
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    # Web
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "streamlit>=1.40",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "python-multipart>=0.0.12",
+    "requests>=2.32",
+
+    # Data
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "pyarrow>=17.0",
+    "duckdb>=1.1",
+
+    # ML
+    "scikit-learn>=1.5",
+    "xgboost>=2.1",
+    "mlxtend>=0.23",
+    "networkx>=3.4",
+    "faiss-cpu>=1.9",
+
+    # LLM
+    "anthropic>=0.39",
+
+    # Utilities
+    "python-dotenv>=1.0",
+    "faker>=30.0",
+    "structlog>=24.4",
+    "typer>=0.13",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.7",
+    "mypy>=1.13",
+]
+
+# This is a runnable application, not a distributable library — uv manages the
+# environment without building/installing the project itself.
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+# typer.Option/Argument and fastapi.Depends are the idiomatic way to declare
+# defaults in these frameworks; they are not mutable-default bugs.
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Option", "typer.Argument", "fastapi.Depends"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

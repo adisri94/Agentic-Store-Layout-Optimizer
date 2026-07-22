@@ -28,7 +28,7 @@ Sprint 1 delivers the **first end-to-end vertical slice**: synthetic POS data �
 
 **In scope:**
 1. Synthetic data generator for the POS + product master domains (minimum needed to mine baskets).
-2. Data-access layer (`platform/data_access.py`) — DuckDB over Parquet + SQLite connection.
+2. Data-access layer (`platform_services/data_access.py`) — DuckDB over Parquet + SQLite connection.
 3. Market Basket Analysis engine (Apriori / FP-Growth via `mlxtend`) producing raw recommendations scored by **lift, confidence, support**.
 4. Governance service (#9): plain-English rationale, policy checks (POL-001–005), append-only JSONL audit log — **in the path of every recommendation** (D-012, principle #5).
 5. FastAPI endpoints: `POST /api/v1/recommendations`, `GET /api/v1/audit/log`, `GET /api/v1/audit/{recommendation_id}`, `GET /health`, with `X-API-Key` auth.
@@ -104,7 +104,7 @@ Story IDs: `US-1.x`. Test IDs: `TC-1.x.y` (unit `U`, integration `I`).
 
 ### US-1.2 — Read data through the data-access layer
 
-> **As a** developer (enabler), **I want** all data reads to go through `platform/data_access.py`, **so that** services never touch Parquet/SQLite directly (§5.2, principle: layer boundaries).
+> **As a** developer (enabler), **I want** all data reads to go through `platform_services/data_access.py`, **so that** services never touch Parquet/SQLite directly (§5.2, principle: layer boundaries).
 
 **Acceptance Criteria:**
 - **AC1** — `data_access.load_parquet(domain)` returns a DataFrame for `"pos_transactions"` and `"product_master"`.
@@ -311,7 +311,7 @@ Story IDs: `US-1.x`. Test IDs: `TC-1.x.y` (unit `U`, integration `I`).
 
 # 7. Test Strategy Summary (per §14)
 
-- **Unit tests** (`tests/unit/`) mirror `services/` + `platform/` structure; every public function ≥ 1 test.
+- **Unit tests** (`tests/unit/`) mirror `services/` + `platform_services/` structure; every public function ≥ 1 test.
 - **Integration tests** (`tests/integration/`) cover the recommendation flow (Flow A, §8.1) end to end using small synthetic data and **no live LLM**.
 - **Every policy rule** (POL-001–005) has a dedicated test (§14.2).
 - **Every audit write** has a format test (§14.2).

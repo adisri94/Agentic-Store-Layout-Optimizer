@@ -40,8 +40,8 @@
 
 | Sprint | Focus | Status |
 |--------|-------|--------|
-| **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | 🔄 In progress |
-| **Sprint 1** | Core MBA + #9 Explainability & Governance | ⏳ Not started |
+| **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
+| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1, US-1.2 done) |
 | **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -204,9 +204,28 @@ Focus: establish the repository, the authoritative documentation set, and the so
 
 ---
 
+### `388c3bc` — Lock Sprint 1 backlog for development (D-032)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Foundation → Sprint 1 boundary |
+
+**Files changed:**
+- `docs/sprint_1_backlog.md` — new file (+347)
+- `docs/decision_log.md` — modified (+31; D-032)
+- `Claude.md` — modified (+4)
+- `docs/project_journal.md` — modified (+22 / −1)
+- **Total:** 4 files, +403 / −1
+
+**Summary:** Created and locked the Sprint 1 backlog (11 user stories US-1.1–US-1.11 with acceptance criteria and test cases), logged D-032, and bound development to the active sprint backlog in CLAUDE.md (Section 10 rule, Section 11 checklist step 0, Section 12 listing). Marks the transition from Foundation planning to Sprint 1 coding.
+
+---
+
 ## Sprint 1 — Core MBA + #9 Explainability & Governance
 
-_Backlog locked 22 Jul 2026 (D-032, `sprint_1_backlog.md`). Entries will be added here as Sprint 1 work lands on `main`._
+_Backlog locked 22 Jul 2026 (D-032, `sprint_1_backlog.md`). Entries are added here as Sprint 1 work lands on `main`._
 
 Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governance wrapper (`services/governance/`) live from day one, and the first end-to-end vertical slice (one basket → one rule → one governed recommendation).
 

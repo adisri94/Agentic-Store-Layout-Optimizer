@@ -72,13 +72,13 @@ store-layout-optimizer/
 │   ├── affinity_optimization/ # MBA + #1 + #4 + #5 + #6
 │   ├── genai_vendor/          # #3 + #8
 │   └── governance/            # #9
-├── platform/                  # L4 — LLM client, data access, vector store, graph store, config
+├── platform_services/                  # L4 — LLM client, data access, vector store, graph store, config
 ├── data/                      # L5 — SQLite, Parquet (data/samples/), FAISS, JSONL audit log
-├── tests/                     # pytest, mirrors services/ + platform/
+├── tests/                     # pytest, mirrors services/ + platform_services/
 └── docs/                      # architecture.md, decision_log.md, data_contract.md, demo_script.md, governance_charter.md, production_mapping.md
 ```
 
-**Layer rule:** a layer may only call the layer directly below it. UI never calls Services directly. Services never touch the Data layer directly — always go through `platform/data_access.py`. Full call-matrix in `architecture.md` §3.2.
+**Layer rule:** a layer may only call the layer directly below it. UI never calls Services directly. Services never touch the Data layer directly — always go through `platform_services/data_access.py`. Full call-matrix in `architecture.md` §3.2.
 
 ---
 
@@ -128,8 +128,8 @@ If a business document (Vision One-Pager, Enhancement Deep-Dive) mentions any of
   def get_recommendations(...):
       return _compute_raw_recommendations(...)
   ```
-- **Data access:** never call `open()` on Parquet or `sqlite3.connect()` directly in service code — always go through `platform/data_access.py`.
-- **LLM client:** all LLM calls go through `platform/llm_client.py`. If `ANTHROPIC_API_KEY` is missing, it must transparently return mock responses — never raise or crash.
+- **Data access:** never call `open()` on Parquet or `sqlite3.connect()` directly in service code — always go through `platform_services/data_access.py`.
+- **LLM client:** all LLM calls go through `platform_services/llm_client.py`. If `ANTHROPIC_API_KEY` is missing, it must transparently return mock responses — never raise or crash.
 - **API auth:** `X-API-Key` header on all endpoints; vendor endpoints additionally require `X-Vendor-Id` (D-029). No OAuth/SSO in Phase 1.
 
 Full API route table, request/response Pydantic models, and the two canonical request flows (recommendation flow, NL planogram flow) are in `architecture.md` §7–§9.
