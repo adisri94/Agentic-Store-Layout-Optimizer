@@ -41,7 +41,7 @@
 | Sprint | Focus | Status |
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
-| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1, US-1.2 done) |
+| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In progress (US-1.1–US-1.7 done) |
 | **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -246,6 +246,23 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 - `tests/` — 13 tests (US-1.1, US-1.2, layer-boundary guard)
 
 **Summary:** First Sprint 1 code slice. Delivered US-1.1 (synthetic Product Master + POS generator, deterministic, schema-faithful, affinity-seeded) and US-1.2 (data-access layer: `load_parquet`, `duckdb_query`, `get_sqlite_conn` with typed errors). Established `pyproject.toml` with the locked dependency set (verified installing on Python 3.13) and ruff/pytest config. Renamed Layer 4 package to `platform_services/` (D-033). Sample Parquet intentionally not committed until the schema settles.
+
+---
+
+### `9fee04d` — Sprint 1 US-1.3: Market Basket Analysis engine
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (US-1.3) |
+
+**Files changed:**
+- `api/schemas.py` — new (+40); the `Recommendation` model (§9)
+- `services/affinity_optimization/mba_core/engine.py` — new (+127)
+- service/test scaffolding — **Total:** 10 files, +295
+
+**Summary:** Implemented the MBA engine (US-1.3): mines association rules via mlxtend (FP-Growth default, Apriori selectable), scored by lift/confidence/support, mapped to ranked `Recommendation` objects. Exposes raw mining only — no user-facing entry point, so nothing bypasses governance. Added `Recommendation` to `api/schemas.py` (with a `contributing_baskets` evidence field). Tests TC-1.3.1–1.3.6.
 
 ---
 
