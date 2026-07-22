@@ -336,6 +336,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ---
 
+### `38a5c7f` — Document Sprint 1 demo refinements (D-035): US-1.12–1.14
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (D-035) |
+
+**Files changed:** `docs/decision_log.md` (+30; D-035), `docs/sprint_1_backlog.md` (+53), `docs/project_journal.md`.
+
+**Summary:** Documented the owner-approved post-lock scope addition (D-035) and added stories US-1.12 (transaction upload), US-1.13 (category dropdown), US-1.14 (SKU names) with acceptance criteria and test cases, ahead of implementation.
+
+---
+
 ## Sprint 2 — #1 Contextual Affinity + #6 Multi-Objective Optimizer
 
 _No commits yet._

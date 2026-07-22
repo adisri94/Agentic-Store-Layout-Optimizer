@@ -2,7 +2,57 @@
 
 from __future__ import annotations
 
-from ui.formatting import audit_display_row, recommendation_display_row
+from ui.formatting import (
+    ALL_CATEGORIES,
+    audit_display_row,
+    category_options,
+    name_map,
+    recommendation_display_row,
+    sku_label,
+)
+
+_PRODUCTS = [
+    {"sku_id": "SKU-1", "product_name": "Running Shoes", "category_l1": "Footwear"},
+    {"sku_id": "SKU-2", "product_name": "Sports Socks", "category_l1": "Accessories"},
+    {"sku_id": "SKU-3", "product_name": "Yoga Mat", "category_l1": "Equipment"},
+    {"sku_id": "SKU-4", "product_name": "Trail Shoes", "category_l1": "Footwear"},
+]
+
+
+def test_category_options_sorted_distinct_with_all_first():
+    """TC-1.13.2 — options are 'All categories' then sorted distinct category_l1."""
+    assert category_options(_PRODUCTS) == [
+        ALL_CATEGORIES,
+        "Accessories",
+        "Equipment",
+        "Footwear",
+    ]
+
+
+def test_sku_label_with_and_without_name():
+    """TC-1.14.1 / TC-1.14.2 — 'CODE — Name' when known, code alone otherwise."""
+    names = name_map(_PRODUCTS)
+    assert sku_label("SKU-1", names) == "SKU-1 — Running Shoes"
+    assert sku_label("SKU-999", names) == "SKU-999"
+
+
+def test_recommendation_row_uses_names():
+    """US-1.14 — the results row shows CODE — Name for both SKUs."""
+    names = name_map(_PRODUCTS)
+    row = recommendation_display_row(
+        {
+            "sku_a": "SKU-1",
+            "sku_b": "SKU-2",
+            "placement_type": "adjacency",
+            "lift": 2.0,
+            "confidence": 0.4,
+            "support": 0.05,
+            "policy_warnings": [],
+        },
+        names,
+    )
+    assert row["Product A"] == "SKU-1 — Running Shoes"
+    assert row["Product B"] == "SKU-2 — Sports Socks"
 
 
 def test_recommendation_display_row():
@@ -19,8 +69,8 @@ def test_recommendation_display_row():
         "audit_id": "aud-1",
     }
     row = recommendation_display_row(payload)
-    assert row["SKU A"] == "SKU-A"
-    assert row["SKU B"] == "SKU-B"
+    assert row["Product A"] == "SKU-A"  # code alone when no name map is supplied
+    assert row["Product B"] == "SKU-B"
     assert row["Lift"] == 2.13
     assert row["Confidence"] == "35%"
     assert row["Support"] == "8.1%"

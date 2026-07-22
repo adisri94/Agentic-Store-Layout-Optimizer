@@ -6,6 +6,16 @@ entry point :func:`get_recommendations` (US-1.7), which routes every recommendat
 through the governance service before returning.
 """
 
-from services.affinity_optimization.service import get_recommendations
+from services.affinity_optimization.service import (
+    get_product_catalog,
+    get_recommendations,
+    get_recommendations_for_transactions,
+    missing_pos_columns,
+)
 
-__all__ = ["get_recommendations"]
+__all__ = [
+    "get_product_catalog",
+    "get_recommendations",
+    "get_recommendations_for_transactions",
+    "missing_pos_columns",
+]

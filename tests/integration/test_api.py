@@ -90,3 +90,59 @@ def test_audit_for_recommendation(client: TestClient):
 def test_audit_requires_api_key(client: TestClient):
     """TC-1.9.3 — audit endpoints require the API key."""
     assert client.get("/api/v1/audit/log").status_code == 401
+
+
+def test_products_endpoint(client: TestClient):
+    """TC-1.13.1 — /products returns entries with sku_id, product_name, category_l1."""
+    resp = client.get("/api/v1/products", headers=HEADERS)
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body
+    assert {"sku_id", "product_name", "category_l1"} <= set(body[0])
+
+
+def _pos_csv(seeded_data_dir: Path) -> bytes:
+    """Return the seeded POS transactions as CSV bytes."""
+    import pandas as pd
+
+    frame = pd.read_parquet(seeded_data_dir / "samples" / "pos_transactions.parquet")
+    return frame.to_csv(index=False).encode("utf-8")
+
+
+def test_upload_happy_path(client: TestClient, seeded_data_dir: Path):
+    """TC-1.12.1 — a valid POS CSV upload returns governed recommendations."""
+    resp = client.post(
+        "/api/v1/recommendations/upload",
+        params={"top_k": 10},
+        files={"file": ("txns.csv", _pos_csv(seeded_data_dir), "text/csv")},
+        headers=HEADERS,
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body and "rationale" in body[0] and body[0]["audit_id"]
+
+
+def test_upload_missing_columns_rejected(client: TestClient):
+    """TC-1.12.2 — a CSV missing a mandatory column returns 422 (standard shape)."""
+    bad = b"sku_id,quantity\nSKU-1,1\nSKU-2,1\n"
+    resp = client.post(
+        "/api/v1/recommendations/upload",
+        files={"file": ("bad.csv", bad, "text/csv")},
+        headers=HEADERS,
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "validation_error"
+    assert "basket_id" in resp.json()["error"]["message"]
+
+
+def test_upload_does_not_persist_parquet(client: TestClient, seeded_data_dir: Path):
+    """TC-1.12.3 — an upload does not create/modify any Parquet sample (in-memory only)."""
+    samples = seeded_data_dir / "samples"
+    before = {p.name for p in samples.glob("*.parquet")}
+    client.post(
+        "/api/v1/recommendations/upload",
+        files={"file": ("txns.csv", _pos_csv(seeded_data_dir), "text/csv")},
+        headers=HEADERS,
+    )
+    after = {p.name for p in samples.glob("*.parquet")}
+    assert before == after

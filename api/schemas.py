@@ -42,6 +42,20 @@ class Recommendation(BaseModel):
     context: dict = Field(default_factory=dict)
 
 
+class ProductSummary(BaseModel):
+    """A minimal product-catalog entry for the UI (US-1.13 / US-1.14).
+
+    Attributes:
+        sku_id: Internal SKU key.
+        product_name: Marketing product name.
+        category_l1: Top-level category (drives the category dropdown).
+    """
+
+    sku_id: str
+    product_name: str
+    category_l1: str
+
+
 class RecommendationRequest(BaseModel):
     """Request body for ``POST /api/v1/recommendations``.
 

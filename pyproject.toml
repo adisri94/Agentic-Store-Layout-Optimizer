@@ -62,7 +62,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 # typer.Option/Argument and fastapi.Depends are the idiomatic way to declare
 # defaults in these frameworks; they are not mutable-default bugs.
 [tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["typer.Option", "typer.Argument", "fastapi.Depends"]
+extend-immutable-calls = ["typer.Option", "typer.Argument", "fastapi.Depends", "fastapi.File"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

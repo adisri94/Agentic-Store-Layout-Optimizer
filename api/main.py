@@ -15,7 +15,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from api.routes import audit, health, recommendations
+from api.routes import audit, health, products, recommendations
 from platform_services.config import settings
 
 logger = structlog.get_logger(__name__)
@@ -75,3 +75,4 @@ async def validation_exception_handler(
 app.include_router(health.router)
 app.include_router(recommendations.router)
 app.include_router(audit.router)
+app.include_router(products.router)
