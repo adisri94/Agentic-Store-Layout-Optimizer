@@ -322,6 +322,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ---
 
+### `bca18f5` — Fix Streamlit import path for the ui package
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (fix) |
+
+**Files changed:** `ui/streamlit_app.py` (+14/−2), `.claude/launch.json` (new, +18), `docs/project_journal.md`.
+
+**Summary:** Fixed a `ModuleNotFoundError: No module named 'ui'` seen when launching the UI — `streamlit run` put the `ui/` folder on `sys.path` instead of the repo root. Inserted the repo root onto `sys.path` at the top of `streamlit_app.py` before importing the `ui` package (also fixes `./tasks.ps1 demo`). Brought `.claude/launch.json` (api + ui dev-server configs) under version control.
+
+---
+
 ## Sprint 2 — #1 Contextual Affinity + #6 Multi-Objective Optimizer
 
 _No commits yet._

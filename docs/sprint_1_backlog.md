@@ -306,6 +306,59 @@ Story IDs: `US-1.x`. Test IDs: `TC-1.x.y` (unit `U`, integration `I`).
 | US-1.9 | API (audit) | §7.3 | D-021 |
 | US-1.10 | UI (Category Mgr) | §3.2, demo_script | D-004 |
 | US-1.11 | UI (Admin/Gov) | §3.2, demo_script | D-004 |
+| US-1.12 | Upload transactions | §7.3 | D-035 |
+| US-1.13 | Category dropdown | §7.3, §3.2 | D-035 |
+| US-1.14 | SKU names in results | §3.2 | D-035 |
+
+---
+
+# 6a. Approved Refinements (post-lock, D-035)
+
+Added after the D-032 lock at the owner's request to strengthen the demo. Same
+Definition of Done as the other stories (tests + ruff + docstrings + governance-in-path).
+
+### US-1.12 — Upload transaction data and get real recommendations
+
+> **As a** Category Manager (demoing to a prospect), **I want** to upload my own transaction file and get recommendations from it, **so that** I can prove the tool computes on real data, not canned output.
+
+**Acceptance Criteria:**
+- **AC1** — The Category Manager screen has a CSV uploader and a downloadable sample template.
+- **AC2** — `POST /api/v1/recommendations/upload` accepts the file, validates it against the **full POS schema** (all mandatory columns from `data_contract.md` §5.1.3 present), mines + governs it, and returns governed recommendations.
+- **AC3** — A file missing mandatory columns returns **422** in the standard error envelope, naming the missing columns; no crash.
+- **AC4** — Uploaded data is processed **in-memory only** — nothing is written to `data/samples/` or `app.db`.
+- **AC5** — Every returned recommendation is a `GovernedRecommendation` (governance-in-path still holds for uploaded data).
+
+**Test Cases:**
+- **TC-1.12.1 (I)** — Upload a valid POS CSV → 200 with ≥ 1 governed recommendation.
+- **TC-1.12.2 (I)** — Upload a CSV missing `basket_id` → 422 with the standard error shape naming the missing column.
+- **TC-1.12.3 (I)** — After an upload, no new file appears under the data dir (in-memory only).
+- **TC-1.12.4 (U)** — POS-schema validation helper accepts a conforming set of columns and rejects an incomplete one.
+
+### US-1.13 — Category dropdown
+
+> **As a** Category Manager, **I want** to pick a category from a dropdown, **so that** I don't have to know exact category spellings.
+
+**Acceptance Criteria:**
+- **AC1** — `GET /api/v1/products` returns product entries with at least `sku_id`, `product_name`, `category_l1`.
+- **AC2** — The UI shows a dropdown of distinct `category_l1` values plus an **"All"** default.
+- **AC3** — Selecting "All" returns unfiltered results; selecting a category filters as before.
+
+**Test Cases:**
+- **TC-1.13.1 (I)** — `GET /api/v1/products` returns entries containing `sku_id`, `product_name`, `category_l1`.
+- **TC-1.13.2 (U)** — A UI helper turns the products payload into a sorted, de-duplicated category list prefixed with "All".
+
+### US-1.14 — Show SKU names alongside codes
+
+> **As a** Category Manager, **I want** product names shown next to SKU codes, **so that** results are readable without a code lookup.
+
+**Acceptance Criteria:**
+- **AC1** — The UI builds a `sku_id -> product_name` map from `GET /api/v1/products` (client-side lookup; recommendation schema unchanged).
+- **AC2** — The results table and the "Why…" panel show `CODE — Name` for both SKUs.
+- **AC3** — A SKU absent from the map falls back to showing the code alone (no error).
+
+**Test Cases:**
+- **TC-1.14.1 (U)** — Name-map helper renders `CODE — Name` when the code is present.
+- **TC-1.14.2 (U)** — Missing code falls back to the code alone.
 
 ---
 

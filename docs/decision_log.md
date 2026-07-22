@@ -924,6 +924,36 @@ The 3 consolidated services are:
 
 ---
 
+## D-035 · Sprint 1 Demo Refinements (post-lock scope addition)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 22 Jul 2026 |
+| **Category** | Product · Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Add three owner-requested refinements to Sprint 1 **after** the backlog lock (D-032), captured as new stories US-1.12–US-1.14 in `sprint_1_backlog.md`:
+
+1. **US-1.12 — Upload transaction data.** A CSV uploader in the Category Manager screen; a new `POST /api/v1/recommendations/upload` endpoint validates the file against the **full POS schema** (mandatory columns per `data_contract.md` §5.1.3), runs the real MBA + governance pipeline on it **in-memory only** (not persisted), and returns governed recommendations. A downloadable sample template is provided. Proves the tool computes on real, user-supplied data.
+2. **US-1.13 — Category dropdown.** Replace the free-text category box with a dropdown of distinct **category_l1** values plus an "All" default, sourced from a new `GET /api/v1/products` endpoint.
+3. **US-1.14 — SKU names in results.** Display product names next to SKU codes via **UI-side lookup** of the same `GET /api/v1/products` endpoint; codes without a name fall back to the code alone.
+
+**Rationale:**
+- Uploading real data addresses the "is this just show-and-tell?" objection — the strongest credibility lever in a prospect demo.
+- A dropdown and human-readable names make the demo legible to non-technical audiences.
+- No new dependencies (`python-multipart` already present); no runtime-stack change.
+
+**Alternatives Considered:**
+- *Defer to Sprint 2* — rejected: these materially improve the Sprint 1 demo and are low-risk.
+- *Persist uploads to disk* — rejected for now: keeps the demo stateless and avoids the unresolved "commit Parquet" question.
+- *Two endpoints (`/categories` + name lookup)* — rejected: one `GET /api/v1/products` endpoint serves both the dropdown and the name map.
+
+**Impact:** `sprint_1_backlog.md` gains US-1.12–US-1.14 with acceptance criteria and test cases. New endpoints `POST /api/v1/recommendations/upload` and `GET /api/v1/products`. Schema unchanged (names are looked up client-side). Sprint 1 sign-off now covers US-1.1–US-1.14.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.
