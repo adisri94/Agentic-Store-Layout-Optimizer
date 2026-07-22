@@ -294,6 +294,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ---
 
+### `cb5d017` — Sprint 1 US-1.10–1.11: Streamlit UI (Category Manager + Admin/Governance)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (US-1.10, US-1.11) |
+
+**Files changed:** 13 files, +318 / −1 — `ui/streamlit_app.py`, `ui/modes/{category_manager,admin_governance}.py`, `ui/api_client.py`, `ui/formatting.py`, `platform_services/config.py` (+api_base_url), UI tests, `.gitignore`.
+
+**Summary:** Built the Streamlit UI: Category Manager mode (get recommendations + "Why this recommendation?" rationale/warnings panel) and Admin/Governance mode (audit-log viewer). UI talks to the API over HTTP only (L1→L2), enforced by an import-boundary test. Verified the full path live (seed → API → 5 governed recs + 5 audit entries). Completes all 11 Sprint 1 user stories; sample Parquet now gitignored until the schema settles.
+
+---
+
 ## Sprint 2 — #1 Contextual Affinity + #6 Multi-Objective Optimizer
 
 _No commits yet._
