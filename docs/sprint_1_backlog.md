@@ -15,7 +15,7 @@
 | **Product Name** | Store Layout (Product Placement) Optimizer Tool |
 | **Document Type** | Sprint Backlog (User Stories · Acceptance Criteria · Test Cases) |
 | **Sprint** | Sprint 1 — Core MBA + #9 Explainability & Governance |
-| **Status** | 🔒 Approved & Locked for Development (22 Jul 2026) — see `decision_log.md` D-032 |
+| **Status** | ✅ Delivered & Signed Off (23 Jul 2026) — see `decision_log.md` D-036. Scope: US-1.1–US-1.14 (D-032 lock + D-035 refinements) |
 | **Owner** | Aditya Srivastava, Senior Consultant, Cognizant |
 | **Last Updated** | 22 July 2026 |
 | **Related Docs** | `architecture.md` §4, §7, §9, §10, §14 · `decision_log.md` D-025, D-012 · `governance_charter.md` POL-001–005 · `demo_script.md` (Sprint 1 scenes) · `data_contract.md` |

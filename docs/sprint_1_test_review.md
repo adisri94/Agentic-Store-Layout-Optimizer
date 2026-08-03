@@ -84,13 +84,15 @@ These are planned for later sprints — their absence is by design, not a defect
 
 | Field | Value |
 |---|---|
-| Reviewed by | ________________________ |
-| Date | ________________________ |
-| Result | ☐ All checks pass — approve Sprint 1 closure   ☐ Issues found (list below) |
+| Reviewed by | Aditya Srivastava (owner) |
+| Date | 23 Jul 2026 |
+| Result | ☑ All checks pass — Sprint 1 closure approved (see `decision_log.md` D-036) |
 
 Notes / issues:
 
-_______________________________________________________________
+Signed off with US-1.1–US-1.14 delivered. One item carried to Sprint 2 (T-014):
+add a minimum-supporting-baskets guard to avoid thin-evidence, high-lift rules
+when a single small store is filtered.
 
 ---
 

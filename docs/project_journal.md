@@ -41,8 +41,8 @@
 | Sprint | Focus | Status |
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
-| **Sprint 1** | Core MBA + #9 Explainability & Governance | 🔄 In review (US-1.1–US-1.11 done; awaiting sign-off) |
-| **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started |
+| **Sprint 1** | Core MBA + #9 Explainability & Governance | ✅ Complete — signed off 23 Jul 2026 (D-036); US-1.1–US-1.14 |
+| **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started (backlog to be drafted + locked) |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
 | **Sprint 5** | #8 Vendor Collaboration Module | ⏳ Not started |
@@ -347,6 +347,20 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 **Files changed:** `docs/decision_log.md` (+30; D-035), `docs/sprint_1_backlog.md` (+53), `docs/project_journal.md`.
 
 **Summary:** Documented the owner-approved post-lock scope addition (D-035) and added stories US-1.12 (transaction upload), US-1.13 (category dropdown), US-1.14 (SKU names) with acceptance criteria and test cases, ahead of implementation.
+
+---
+
+### `41f763a` — Sprint 1 US-1.12–1.14: transaction upload, category dropdown, SKU names
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-07-22 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (US-1.12–US-1.14) |
+
+**Files changed:** 15 files, +484 / −44 — `api/routes/products.py`, upload endpoint in `api/routes/recommendations.py`, `ProductSummary` schema, service catalog/validation helpers, UI dropdown/names/upload, `ui/sample_transactions.csv`, tests.
+
+**Summary:** Implemented the D-035 refinements. `GET /api/v1/products` powers a category dropdown and SKU-name lookup; `POST /api/v1/recommendations/upload` validates a CSV against the full POS schema and mines + governs it in-memory (422 on missing columns). UI now shows a dropdown, `CODE — Name` in results/rationale, and an upload panel with a downloadable template. 54 tests total. Completes Sprint 1 scope (US-1.1–US-1.14).
 
 ---
 

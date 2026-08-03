@@ -954,6 +954,30 @@ The 3 consolidated services are:
 
 ---
 
+## D-036 · Sprint 1 Sign-Off (Closure)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 23 Jul 2026 |
+| **Category** | Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Sprint 1 (Core MBA + #9 Explainability & Governance) is **signed off and closed** by the owner. All 14 stories are delivered: US-1.1–US-1.11 (locked backlog, D-032) plus US-1.12–US-1.14 (approved demo refinements, D-035).
+
+**Evidence at sign-off:**
+- 54 automated tests pass; `ruff` clean; the vertical slice verified live (seed → API → governed, explained, audited recommendations; UI both modes; CSV upload).
+- Governance-in-path holds structurally — `get_recommendations` returns only `GovernedRecommendation`, one audit line per recommendation.
+- Delivered end to end: synthetic data generator, data-access layer, MBA engine, governance service (rationale + POL-001–005 + append-only audit), FastAPI (recommendations, upload, audit, products, health), Streamlit UI (Category Manager + Admin/Governance).
+
+**Carried forward to Sprint 2 (see T-014):**
+- Thin-evidence / high-lift recommendations when a single small store is filtered — to be addressed with a minimum-supporting-baskets guard.
+
+**Impact:** `main` is the Sprint 1 demo baseline. Sprint 2 (#1 Contextual Affinity + #6 Multi-Objective Optimizer) may begin; its backlog is to be drafted and locked before coding (per D-025 / the sprint-backlog discipline).
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.
@@ -973,6 +997,7 @@ These are consciously deferred to Phase 2+ and will be revisited as clarity emer
 | **T-011** | Cloud deployment (AWS/Azure/GCP) | When moving beyond demo phase |
 | **T-012** | Enhancement #2 (CV + IoT) | Phase 2 roadmap |
 | **T-013** | Enhancement #7 (Digital Twin + AR) | Phase 2 roadmap |
+| **T-014** | Minimum-supporting-baskets guard (avoid thin-evidence, high-lift rules when a small store is filtered) | Sprint 2 (surfaced at Sprint 1 sign-off, D-036) |
 
 ---
 
