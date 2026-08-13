@@ -42,7 +42,8 @@
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
 | **Sprint 1** | Core MBA + #9 Explainability & Governance | ✅ Complete — signed off 23 Jul 2026 (D-036); US-1.1–US-1.14 |
-| **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | ⏳ Not started (backlog to be drafted + locked) |
+| **Sprint 2A** | #1 Contextual Affinity | 🔍 Backlog drafted (D-038 split); awaiting lock |
+| **Sprint 2B** | #6 Multi-Objective Optimization | 🔍 Backlog drafted (D-038 split); starts after 2A |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
 | **Sprint 5** | #8 Vendor Collaboration Module | ⏳ Not started |
@@ -364,9 +365,29 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ---
 
-## Sprint 2 — #1 Contextual Affinity + #6 Multi-Objective Optimizer
+### `8ebd1ec` — Sign off and close Sprint 1 (D-036)
 
-_No commits yet._
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-03 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 1 (closure) |
+
+**Files changed:** `docs/decision_log.md` (+25; D-036), `docs/project_journal.md`, `docs/sprint_1_backlog.md`, `docs/sprint_1_test_review.md`.
+
+**Summary:** Signed off and closed Sprint 1 (D-036) with all 14 stories delivered; added T-014 to the deferred list; marked the roadmap/backlog complete and filled the review-checklist sign-off box.
+
+---
+
+## Sprint 2A — #1 Contextual Affinity
+
+_No commits yet. Backlog `sprint_2a_backlog.md` (split from Sprint 2 per D-038); to be locked before coding. Weather uses a synthetic default + optional live Open-Meteo provider (D-037)._
+
+---
+
+## Sprint 2B — #6 Multi-Objective Optimization
+
+_No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._
 
 ---
 

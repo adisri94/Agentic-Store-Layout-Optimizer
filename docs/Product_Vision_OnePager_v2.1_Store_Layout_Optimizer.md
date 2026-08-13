@@ -127,7 +127,8 @@ The platform is designed on Data-as-a-Product principles. Six data domains form 
 |---|---|---|
 | **Foundation (2–3 wks)** | Discovery, Data Strategy, Architecture | Vision one-pager, Data Product Contract, Architecture Blueprint, Repo + CI/CD, Governance Charter, Project Journal |
 | **Sprint 1** | Core MBA + #9 Explainability guardrails | Apriori/FP-Growth engine; lift/confidence/support outputs; explainability service; bias checks |
-| **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | Sequence mining; RL scaffolding; weighted optimizer for lift/margin/inventory/shrink |
+| **Sprint 2A** | #1 Contextual Affinity | Context-aware affinity (time/weather/promo) + negative-association detection (split from Sprint 2 — see decision_log.md D-038) |
+| **Sprint 2B** | #6 Multi-Objective Optimizer | Weighted optimizer for lift/margin/inventory/shrink |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | Unified affinity graph; identity resolution; mission classifier; store clustering |
 | **Sprint 4** | #3 GenAI Planogram Agent | LLM gateway; prompt registry; NL chat UI; agent tools for MBA + optimizer |
 | **Sprint 5** | #8 Vendor Collaboration Module | Vendor portal; trade promo ingestion; collaboration dashboard; RBAC |

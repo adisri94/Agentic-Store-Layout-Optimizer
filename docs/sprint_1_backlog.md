@@ -35,8 +35,8 @@ Sprint 1 delivers the **first end-to-end vertical slice**: synthetic POS data �
 6. Minimal Streamlit UI: **Category Manager** mode (get recommendations + "Why this recommendation?" panel) and **Admin/Governance** mode (audit log view).
 
 **Explicitly OUT of scope for Sprint 1** (deferred to later sprints — do NOT build):
-- ❌ Contextual signals: time-of-day, weather, promo (#1 — Sprint 2)
-- ❌ Multi-objective scoring: margin/turn/shrink (#6 — Sprint 2)
+- ❌ Contextual signals: time-of-day, weather, promo (#1 — Sprint 2A)
+- ❌ Multi-objective scoring: margin/turn/shrink (#6 — Sprint 2B)
 - ❌ Omnichannel/clickstream, segmentation (#4/#5 — Sprint 3)
 - ❌ GenAI planogram chat (#3 — Sprint 4)
 - ❌ Vendor portal / promo ingestion (#8 — Sprint 5)

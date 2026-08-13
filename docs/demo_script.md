@@ -25,10 +25,10 @@ Sprint 1 delivers exactly two things. **Do not demo or imply anything beyond thi
 
 | ✅ What Sprint 1 Actually Does | ❌ What It Does NOT Do Yet |
 |---|---|
-| Finds product pairs frequently bought together, from historical POS data | Does not adjust for time-of-day, weather, or promos (that's Sprint 2, Enhancement #1) |
+| Finds product pairs frequently bought together, from historical POS data | Does not adjust for time-of-day, weather, or promos (that's Sprint 2A, Enhancement #1) |
 | Scores each pairing with **lift, confidence, support** (defined below) | Does not generate planograms via natural-language chat (that's Sprint 4, Enhancement #3) |
 | Attaches a plain-English reason to every recommendation | Does not personalize by shopper segment or mission (that's Sprint 3, Enhancement #5) |
-| Writes a permanent, tamper-proof log of every recommendation shown | Does not optimize for margin/inventory/shrink trade-offs (that's Sprint 2, Enhancement #6) |
+| Writes a permanent, tamper-proof log of every recommendation shown | Does not optimize for margin/inventory/shrink trade-offs (that's Sprint 2B, Enhancement #6) |
 
 ---
 

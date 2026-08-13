@@ -65,8 +65,8 @@ That single command runs every built-in test (data, recommendations, governance,
 
 These are planned for later sprints — their absence is by design, not a defect:
 
-- Adjusting for time of day, weather, or promotions (Sprint 2)
-- Balancing profit / stock / shrink, not just "bought together" (Sprint 2)
+- Adjusting for time of day, weather, or promotions (Sprint 2A)
+- Balancing profit / stock / shrink, not just "bought together" (Sprint 2B)
 - Online + in-store combined data, shopper segments (Sprint 3)
 - Typing a request in plain English to design a shelf (Sprint 4)
 - The vendor portal (Sprint 5)
@@ -90,7 +90,7 @@ These are planned for later sprints — their absence is by design, not a defect
 
 Notes / issues:
 
-Signed off with US-1.1–US-1.14 delivered. One item carried to Sprint 2 (T-014):
+Signed off with US-1.1–US-1.14 delivered. One item carried to Sprint 2A (T-014):
 add a minimum-supporting-baskets guard to avoid thin-evidence, high-lift rules
 when a single small store is filtered.
 

@@ -161,7 +161,8 @@ Per D-025. Each sprint should leave `main` demo-ready — build one working, dem
 |---|---|---|
 | **Foundation** | Repo setup, synthetic data generator, architecture scaffolding | `data/seed.py`, empty service/API/UI skeletons, CI |
 | **Sprint 1** | Core MBA + #9 Explainability guardrails | Apriori/FP-Growth engine; governance wrapper live from day one |
-| **Sprint 2** | #1 Contextual Affinity + #6 Multi-Objective Optimizer | Sequence mining, contextual bandits; weighted scoring |
+| **Sprint 2A** | #1 Contextual Affinity | Context-aware affinity (time/weather/promo) + negative-association detection; min-baskets guard (T-014) |
+| **Sprint 2B** | #6 Multi-Objective Optimizer | Composite scoring (lift + margin + turn − shrink), weighted; re-rank + trade-offs |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | Unified affinity graph; mission classifier |
 | **Sprint 4** | #3 GenAI Planogram Agent | LLM tool-calling agent, NL chat UI |
 | **Sprint 5** | #8 Vendor Collaboration Module | Vendor portal, promo ingestion |

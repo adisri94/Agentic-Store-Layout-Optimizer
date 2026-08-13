@@ -682,7 +682,7 @@ The 3 consolidated services are:
 **Decision:** **Agile / Sprint-based** SDLC with 6 planned sprints:
 - **Foundation Sprint** (2–3 wks) — Vision, Data Contract, Architecture, Repo/CI setup
 - **Sprint 1** — Core MBA + #9 Explainability guardrails
-- **Sprint 2** — #1 Contextual Affinity + #6 Multi-Objective Optimizer
+- **Sprint 2** — #1 Contextual Affinity + #6 Multi-Objective Optimizer *(later split into Sprint 2A #1 and Sprint 2B #6 — see D-038)*
 - **Sprint 3** — #4 Omnichannel Affinity + #5 Segmentation
 - **Sprint 4** — #3 GenAI Planogram Agent
 - **Sprint 5** — #8 Vendor Collaboration Module
@@ -978,6 +978,68 @@ The 3 consolidated services are:
 
 ---
 
+## D-037 · Weather via Provider Seam — Synthetic Default + Optional Live (Open-Meteo)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 23 Jul 2026 (revised same day after an Open-Meteo feasibility check) |
+| **Category** | Architecture · Data |
+| **Status** | ✅ Accepted |
+
+**Decision:** Weather is provided through a `WeatherProvider` interface with **two implementations**:
+1. `SyntheticWeatherProvider` — the **default**: deterministic weather bucket per store × day, fully local and demo-controllable.
+2. `LiveWeatherProvider` — **opt-in** (config flag), calling the free, key-less **Open-Meteo** REST API, with **automatic fallback to the synthetic provider** on any failure (offline, proxy block, timeout, parse error).
+
+This is a narrow, contained relaxation of principle #1 (local-first): the live call is optional and never on the demo's critical path, so the offline guarantee (D-010) still holds by default.
+
+**Rationale:**
+- A feasibility check confirmed Open-Meteo is reachable from the build machine through Zscaler (HTTP 200 with real data); the only obstacle was TLS trust (see Impact).
+- Synthetic stays the **default** because it is offline-safe and **demo-controllable** (toggle Rainy/Sunny to show recommendations re-rank) — stronger for a live demo than whatever today's real weather is.
+- The opt-in `LiveWeatherProvider` satisfies the desire to show *real* weather driving recommendations when a network is available, without breaking offline demos — the same mock-first pattern as the LLM client (principle #7).
+
+**Alternatives Considered:**
+- *Live-only (Open-Meteo as the sole source)* — rejected: breaks offline demos, loses stage control, and needs store→coordinate + historical-endpoint mapping to be meaningful against historical baskets.
+- *Synthetic-only (never call out)* — rejected: the owner wants the option of real weather; the fallback-guarded opt-in provides it at low risk.
+- *`verify=False` to bypass TLS* — rejected: insecure (disables certificate validation / MITM exposure); never used in shipped code.
+
+**Impact:**
+- `data/seed.py` gains a weather field; `WeatherProvider` (+ two implementations) lives in `platform_services/`; `data_contract.md` updated for the new field.
+- **TLS trust:** the live provider must trust the corporate (Zscaler) root CA. Adopt the **`truststore`** package (uses the OS certificate store) — a **new dependency** authorized by this decision; `architecture.md` §12.1 to be updated. (Alternative per-machine `REQUESTS_CA_BUNDLE` env var noted but not preferred.)
+- T-015 is re-scoped: the live provider ships in Sprint 2A (opt-in); mapping fictional stores to real coordinates + Open-Meteo's historical archive endpoint remains a Phase 2 refinement.
+
+**Owner:** Aditya Srivastava
+
+---
+
+## D-038 · Split Sprint 2 into 2A (#1) and 2B (#6)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 23 Jul 2026 |
+| **Category** | Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Split the original Sprint 2 (#1 Contextual Affinity + #6 Multi-Objective Optimization) into two sequential sub-sprints:
+- **Sprint 2A — #1 Contextual Affinity** (+ the T-014 min-baskets guard), backlog `sprint_2a_backlog.md`.
+- **Sprint 2B — #6 Multi-Objective Optimization**, backlog `sprint_2b_backlog.md`, starting after 2A is delivered.
+
+Sprints 3–5 (per D-025) are unchanged; only the Sprint 2 grouping is subdivided (no cascading renumber).
+
+**Rationale:**
+- The combined Sprint 2 backlog (9 stories across two enhancements, data, API, and UI) was assessed as too large for one increment by the owner.
+- #1 is a prerequisite context layer that #6 builds on, so #1 first is the natural order.
+- Smaller increments keep `main` demo-ready and reduce risk for a solo builder (aligns with D-025).
+
+**Alternatives Considered:**
+- *Keep the combined Sprint 2* — rejected: scope too large.
+- *Full renumber (Sprint 3 = #6, shift the rest)* — rejected: cascades through many docs for no benefit; 2A/2B is contained.
+
+**Impact:** Supersedes the Sprint 2 grouping described in D-025. `sprint_2_backlog.md` (uncommitted draft) replaced by `sprint_2a_backlog.md` + `sprint_2b_backlog.md`. `CLAUDE.md` §10, `project_journal.md` roadmap, and the business/demo docs updated to show 2A/2B.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.
@@ -998,6 +1060,7 @@ These are consciously deferred to Phase 2+ and will be revisited as clarity emer
 | **T-012** | Enhancement #2 (CV + IoT) | Phase 2 roadmap |
 | **T-013** | Enhancement #7 (Digital Twin + AR) | Phase 2 roadmap |
 | **T-014** | Minimum-supporting-baskets guard (avoid thin-evidence, high-lift rules when a small store is filtered) | Sprint 2 (surfaced at Sprint 1 sign-off, D-036) |
+| **T-015** | Live weather realism: map fictional stores → real coordinates + use Open-Meteo historical archive for basket dates | Phase 2 (the opt-in live provider itself ships in Sprint 2A per revised D-037) |
 
 ---
 
