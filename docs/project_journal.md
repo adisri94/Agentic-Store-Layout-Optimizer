@@ -511,6 +511,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `2577597` — Adaptive minimum-supporting-baskets guard (D-040)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (review refinement) |
+
+**Files changed:** `mba_core/engine.py` (+`effective_min_baskets`, `adaptive_guard`), `service.py`, `config`/tests, `decision_log.md` (D-040).
+
+**Summary:** Review refinement (D-040): the T-014 guard is now adaptive — the configured threshold (5) on large slices, easing to a hard floor of 2 on small slices — so narrow context/store slices surface evidence-backed pairs while one-basket rules stay excluded. Fixes empty weekend/rainy slices seen in review. 75 tests pass.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._
