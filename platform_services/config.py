@@ -39,6 +39,8 @@ class Settings(BaseSettings):
     enable_live_weather: bool = False
     weather_latitude: float = 28.61
     weather_longitude: float = 77.20
+    # Min supporting baskets a rule needs to be shown (T-014, US-2A.5). 1 = no guard.
+    min_supporting_baskets: int = 5
 
 
 settings = Settings()

@@ -80,6 +80,7 @@ def mine_recommendations(
     top_k: int = 20,
     min_support: float = 0.01,
     min_confidence: float = 0.1,
+    min_supporting_baskets: int = 1,
 ) -> list[Recommendation]:
     """Mine ranked raw recommendations from POS transactions.
 
@@ -89,6 +90,8 @@ def mine_recommendations(
         top_k: Maximum number of recommendations to return.
         min_support: Minimum itemset support threshold.
         min_confidence: Minimum rule confidence threshold.
+        min_supporting_baskets: Exclude rules backed by fewer than this many baskets
+            (T-014 guard, US-2A.5). ``1`` disables the guard.
 
     Returns:
         Up to ``top_k`` :class:`Recommendation` objects, ranked by lift descending.
@@ -103,6 +106,9 @@ def mine_recommendations(
         sku_a = next(iter(rule["antecedents"]))
         sku_b = next(iter(rule["consequents"]))
         support = float(rule["support"])
+        contributing = round(support * n_baskets)
+        if contributing < min_supporting_baskets:
+            continue  # T-014: drop thin-evidence rules
         recommendations.append(
             Recommendation(
                 recommendation_id=f"rec-{sku_a}-{sku_b}",
@@ -112,7 +118,7 @@ def mine_recommendations(
                 lift=float(rule["lift"]),
                 confidence=float(rule["confidence"]),
                 support=support,
-                contributing_baskets=round(support * n_baskets),
+                contributing_baskets=contributing,
             )
         )
 

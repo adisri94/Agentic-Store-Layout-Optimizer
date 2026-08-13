@@ -13,6 +13,7 @@ import pandas as pd
 import structlog
 
 from api.schemas import GovernedRecommendation
+from platform_services.config import settings
 from platform_services.data_access import load_parquet
 from platform_services.weather import get_weather_provider
 from services.affinity_optimization.contextual import apply_context_filter
@@ -125,7 +126,9 @@ def get_recommendations(
             transactions, context, get_weather_provider()
         )
 
-    raw = mine_recommendations(transactions, top_k=top_k)
+    raw = mine_recommendations(
+        transactions, top_k=top_k, min_supporting_baskets=settings.min_supporting_baskets
+    )
 
     if category is not None:
         allowed = _skus_in_category(products, category)
@@ -210,7 +213,9 @@ def get_recommendations_for_transactions(
         Up to ``top_k`` governed recommendations, ranked by lift descending.
     """
     products = load_parquet("product_master", data_dir=data_dir)
-    raw = mine_recommendations(transactions, top_k=top_k)
+    raw = mine_recommendations(
+        transactions, top_k=top_k, min_supporting_baskets=settings.min_supporting_baskets
+    )
     context = _build_context(products)
     governed = [govern(rec, context, data_dir=data_dir) for rec in raw]
     logger.info(

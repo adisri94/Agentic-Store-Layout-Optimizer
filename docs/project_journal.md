@@ -455,6 +455,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `a86a790` — Sprint 2A US-2A.4: negative-association (cannibalization) detection
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.4) |
+
+**Files changed:** `mba_core/engine.py` (+`mine_negative_associations`), `service.py` (+`get_negative_associations`), `governance/explainability.py` (avoid branch), tests.
+
+**Summary:** Negative-association detection — mines co-occurring pairs with lift < `max_lift` (bought together less than chance), tagged `association=negative`, ranked most-negative first, governed with an "Avoid co-placing…" rationale (lift < 1 branch). Distinct from positive recommendations. 67 tests pass.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._
