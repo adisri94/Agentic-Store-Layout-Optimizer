@@ -117,6 +117,7 @@ POS Transactions form the transactional backbone of the tool. Every basket, line
 - Enrich with store master (cluster, format, region).
 - Compute basket-level aggregates (basket_size, unique_sku_count, basket_value).
 - Hash customer_id and loyalty_card_number for PII compliance.
+- **Contextual enrichment (Sprint 2A):** derive `hour_band`, `day_type` (weekday/weekend) and `promo_flag` from the basket, and `weather_bucket` (sunny/rainy/cold/hot/mild) from the `WeatherProvider` (synthetic by default; opt-in live Open-Meteo per D-037). These are derived context fields used for contextual affinity mining — not stored source columns.
 
 ### 5.1.6 Data Quality Rules
 

@@ -763,6 +763,7 @@ dependencies = [
     "faker>=30.0",
     "structlog>=24.4",
     "typer>=0.13",
+    "truststore>=0.9",   # OS trust store for corporate-CA TLS (live weather provider; D-037)
 ]
 
 [dependency-groups]

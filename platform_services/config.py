@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     enable_governance: bool = True
     mock_llm: bool = False
+    # Weather (Sprint 2A, D-037): synthetic by default; opt-in live Open-Meteo.
+    enable_live_weather: bool = False
+    weather_latitude: float = 28.61
+    weather_longitude: float = 77.20
 
 
 settings = Settings()

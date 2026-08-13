@@ -399,6 +399,34 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `64466fc` — Lock Sprint 2A backlog for development (D-039)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (lock) |
+
+**Files changed:** `docs/decision_log.md` (+23; D-039), `docs/sprint_2a_backlog.md`, `docs/project_journal.md`.
+
+**Summary:** Logged D-039 locking the Sprint 2A backlog (US-2A.1–2A.7); set the backlog to Locked and the roadmap to In progress.
+
+---
+
+### `<pending>` — Sprint 2A US-2A.1: weather provider seam
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.1) |
+
+**Files changed:** `platform_services/weather.py` (new), `platform_services/config.py` (weather flags), `pyproject.toml`/`uv.lock` (+truststore), `tests/unit/platform_services/test_weather.py`, `docs/architecture.md` §12.1, `docs/Data_Product_Contract...md`.
+
+**Summary:** Implemented US-2A.1 — a `WeatherProvider` seam with `SyntheticWeatherProvider` (deterministic, offline default) and an opt-in `LiveWeatherProvider` (Open-Meteo; WMO code + temperature → bucket) that falls back to synthetic on any failure and trusts the OS cert store via `truststore` (no `verify=False`). Added config flags and the `truststore` dependency (D-037). 58 tests pass; ruff clean.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._
