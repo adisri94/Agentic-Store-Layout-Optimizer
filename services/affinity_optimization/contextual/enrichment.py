@@ -18,6 +18,17 @@ from platform_services.weather import SyntheticWeatherProvider, WeatherProvider
 
 UNKNOWN = "unknown"
 
+# Maps caller-facing context keys to the enriched column they filter on.
+_CONTEXT_COLUMN = {
+    "time_of_day": "hour_band",
+    "hour_band": "hour_band",
+    "day_type": "day_type",
+    "weather": "weather_bucket",
+    "weather_bucket": "weather_bucket",
+    "promo": "promo_flag",
+    "promo_flag": "promo_flag",
+}
+
 
 def hour_band(moment: datetime) -> str:
     """Map a timestamp to a coarse time-of-day band.
@@ -79,3 +90,35 @@ def enrich_context(
         for store_id, moment in zip(enriched["store_id"], moments, strict=True)
     ]
     return enriched
+
+
+def apply_context_filter(
+    transactions: pd.DataFrame,
+    context: dict,
+    weather_provider: WeatherProvider | None = None,
+) -> tuple[pd.DataFrame, dict]:
+    """Enrich then slice transactions to the rows matching a context (US-2A.3).
+
+    Args:
+        transactions: POS transactions.
+        context: Any of ``time_of_day``/``hour_band``, ``day_type``,
+            ``weather``/``weather_bucket``, ``promo``/``promo_flag``. Keys with a
+            ``None`` value or unknown keys are ignored.
+        weather_provider: Provider for the weather bucket (defaults to synthetic).
+
+    Returns:
+        ``(filtered_transactions, applied_context)`` where ``applied_context`` is the
+        subset of keys actually used for filtering.
+    """
+    enriched = enrich_context(transactions, weather_provider)
+    applied: dict = {}
+    mask = pd.Series(True, index=enriched.index)
+    for key, value in context.items():
+        if value is None:
+            continue
+        column = _CONTEXT_COLUMN.get(key)
+        if column is None:
+            continue
+        mask &= enriched[column] == value
+        applied[key] = value
+    return enriched.loc[mask], applied

@@ -427,6 +427,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `69e138a` — Sprint 2A US-2A.2: basket context enrichment
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.2) |
+
+**Files changed:** `services/affinity_optimization/contextual/{__init__,enrichment}.py` (new), `tests/unit/services/affinity_optimization/test_contextual_enrichment.py`.
+
+**Summary:** Implemented US-2A.2 — `enrich_context` derives `hour_band`, `day_type`, `promo_flag`, and `weather_bucket` (via the WeatherProvider) onto baskets, with pure helper functions and graceful `"unknown"` handling for unparseable timestamps. 62 tests pass.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._

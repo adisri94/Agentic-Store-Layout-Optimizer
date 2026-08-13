@@ -14,6 +14,8 @@ import structlog
 
 from api.schemas import GovernedRecommendation
 from platform_services.data_access import load_parquet
+from platform_services.weather import get_weather_provider
+from services.affinity_optimization.contextual import apply_context_filter
 from services.affinity_optimization.mba_core import mine_recommendations
 from services.governance import govern
 
@@ -86,19 +88,23 @@ def get_recommendations(
     store_id: str | None = None,
     category: str | None = None,
     top_k: int = 20,
+    context: dict | None = None,
     data_dir: Path | None = None,
 ) -> list[GovernedRecommendation]:
     """Return top-k governed placement recommendations.
 
-    Mines association rules from POS baskets, optionally scoped to a store and/or
-    category, then governs each recommendation before returning. The return type is
-    intentionally ``list[GovernedRecommendation]`` — there is no code path that
-    returns raw recommendations to a caller.
+    Mines association rules from POS baskets, optionally scoped to a store, a
+    context (time/day/weather/promo — US-2A.3), and/or a category, then governs each
+    recommendation before returning. The return type is intentionally
+    ``list[GovernedRecommendation]`` — there is no code path that returns raw
+    recommendations to a caller.
 
     Args:
         store_id: Restrict to a single store's transactions (``None`` = all stores).
         category: Restrict to pairs whose antecedent SKU is in this category.
         top_k: Maximum number of recommendations to return.
+        context: Optional context slice (e.g. ``{"day_type": "weekend", "weather": "rainy"}``).
+            ``None`` reproduces the Sprint 1 baseline.
         data_dir: Override the data root (defaults to ``settings.data_dir``).
 
     Returns:
@@ -110,18 +116,29 @@ def get_recommendations(
     if store_id is not None:
         transactions = transactions[transactions["store_id"] == store_id]
 
+    applied_context: dict = {}
+    if context:
+        transactions, applied_context = apply_context_filter(
+            transactions, context, get_weather_provider()
+        )
+
     raw = mine_recommendations(transactions, top_k=top_k)
 
     if category is not None:
         allowed = _skus_in_category(products, category)
         raw = [rec for rec in raw if rec.sku_a in allowed]
 
-    context = _build_context(products)
-    governed = [govern(rec, context, data_dir=data_dir) for rec in raw]
+    if applied_context:
+        for rec in raw:
+            rec.context = dict(applied_context)
+
+    gov_context = _build_context(products)
+    governed = [govern(rec, gov_context, data_dir=data_dir) for rec in raw]
     logger.info(
         "affinity.get_recommendations",
         store_id=store_id,
         category=category,
+        context=applied_context or None,
         returned=len(governed),
     )
     return governed
