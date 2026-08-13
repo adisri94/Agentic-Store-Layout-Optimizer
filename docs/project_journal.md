@@ -413,7 +413,7 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
-### `<pending>` — Sprint 2A US-2A.1: weather provider seam
+### `2f107c4` — Sprint 2A US-2A.1: weather provider seam
 
 | Field | Value |
 |-------|-------|
