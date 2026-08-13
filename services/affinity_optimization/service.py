@@ -127,7 +127,10 @@ def get_recommendations(
         )
 
     raw = mine_recommendations(
-        transactions, top_k=top_k, min_supporting_baskets=settings.min_supporting_baskets
+        transactions,
+        top_k=top_k,
+        min_supporting_baskets=settings.min_supporting_baskets,
+        adaptive_guard=True,
     )
 
     if category is not None:
@@ -214,7 +217,10 @@ def get_recommendations_for_transactions(
     """
     products = load_parquet("product_master", data_dir=data_dir)
     raw = mine_recommendations(
-        transactions, top_k=top_k, min_supporting_baskets=settings.min_supporting_baskets
+        transactions,
+        top_k=top_k,
+        min_supporting_baskets=settings.min_supporting_baskets,
+        adaptive_guard=True,
     )
     context = _build_context(products)
     governed = [govern(rec, context, data_dir=data_dir) for rec in raw]

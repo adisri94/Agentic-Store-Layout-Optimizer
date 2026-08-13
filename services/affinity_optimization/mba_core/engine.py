@@ -25,6 +25,35 @@ logger = structlog.get_logger(__name__)
 Algorithm = Literal["fpgrowth", "apriori"]
 
 
+_MIN_BASKETS_FLOOR = 2
+_MIN_BASKETS_RATIO = 0.02
+
+
+def effective_min_baskets(
+    n_baskets: int,
+    configured: int,
+    floor: int = _MIN_BASKETS_FLOOR,
+    ratio: float = _MIN_BASKETS_RATIO,
+) -> int:
+    """Scale the min-supporting-baskets guard to the slice size (T-014, D-040).
+
+    On large slices the configured threshold applies; on small slices (few baskets,
+    e.g. a single store × a narrow context) it eases down to ``floor`` so some
+    evidence-backed rules can still surface — but never below ``floor``, so
+    single-basket rules remain excluded.
+
+    Args:
+        n_baskets: Number of baskets in the (possibly sliced) data.
+        configured: The configured maximum threshold.
+        floor: The hard minimum (default 2 — blocks one-basket rules).
+        ratio: Fraction of baskets used to scale (default 0.02).
+
+    Returns:
+        The effective threshold, in ``[floor, configured]``.
+    """
+    return max(floor, min(configured, round(ratio * n_baskets)))
+
+
 def baskets_from_transactions(transactions: pd.DataFrame) -> list[list[str]]:
     """Group POS line items into per-basket lists of unique SKUs.
 
@@ -81,6 +110,7 @@ def mine_recommendations(
     min_support: float = 0.01,
     min_confidence: float = 0.1,
     min_supporting_baskets: int = 1,
+    adaptive_guard: bool = False,
 ) -> list[Recommendation]:
     """Mine ranked raw recommendations from POS transactions.
 
@@ -92,6 +122,9 @@ def mine_recommendations(
         min_confidence: Minimum rule confidence threshold.
         min_supporting_baskets: Exclude rules backed by fewer than this many baskets
             (T-014 guard, US-2A.5). ``1`` disables the guard.
+        adaptive_guard: When True, scale the guard to the slice size via
+            :func:`effective_min_baskets` (D-040) so small slices still surface
+            evidence-backed rules while one-basket rules stay excluded.
 
     Returns:
         Up to ``top_k`` :class:`Recommendation` objects, ranked by lift descending.
@@ -101,13 +134,19 @@ def mine_recommendations(
     n_baskets = len(baskets)
     rules = _mine_rules(baskets, algorithm, min_support, min_confidence)
 
+    threshold = (
+        effective_min_baskets(n_baskets, min_supporting_baskets)
+        if adaptive_guard
+        else min_supporting_baskets
+    )
+
     recommendations: list[Recommendation] = []
     for _, rule in rules.iterrows():
         sku_a = next(iter(rule["antecedents"]))
         sku_b = next(iter(rule["consequents"]))
         support = float(rule["support"])
         contributing = round(support * n_baskets)
-        if contributing < min_supporting_baskets:
+        if contributing < threshold:
             continue  # T-014: drop thin-evidence rules
         recommendations.append(
             Recommendation(

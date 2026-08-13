@@ -5,6 +5,7 @@ from __future__ import annotations
 import pandas as pd
 
 from services.affinity_optimization.mba_core import mine_recommendations
+from services.affinity_optimization.mba_core.engine import effective_min_baskets
 
 
 def _txn(basket: str, sku: str) -> dict:
@@ -43,3 +44,28 @@ def test_threshold_one_reproduces_pre_guard():
     )
     pairs = _pairs(recs)
     assert ("C", "D") in pairs or ("D", "C") in pairs
+
+
+def test_effective_min_baskets_scales_with_slice():
+    """D-040 — the guard eases to the floor on small slices, holds at configured on large."""
+    assert effective_min_baskets(300, 5) == 5   # large slice: full guard
+    assert effective_min_baskets(58, 5) == 2    # small slice: floor
+    assert effective_min_baskets(20, 5) == 2
+    assert effective_min_baskets(1000, 5) == 5
+    assert effective_min_baskets(300, 5) >= 2   # never below the floor
+
+
+def test_adaptive_guard_keeps_floor_but_eases_small_slice():
+    """D-040 — a 2-basket pair survives the adaptive guard; a 1-basket pair does not."""
+    rows = []
+    for i in range(2):  # 2-basket pair E+F
+        rows += [_txn(f"EF-{i}", "E"), _txn(f"EF-{i}", "F")]
+    rows += [_txn("GH-0", "G"), _txn("GH-0", "H")]  # 1-basket pair G+H
+    df = pd.DataFrame(rows)
+
+    recs = mine_recommendations(
+        df, min_support=0.1, min_confidence=0.1, min_supporting_baskets=5, adaptive_guard=True
+    )
+    pairs = _pairs(recs)
+    assert ("E", "F") in pairs or ("F", "E") in pairs   # 2 baskets survive (floor 2)
+    assert ("G", "H") not in pairs and ("H", "G") not in pairs  # 1 basket still excluded

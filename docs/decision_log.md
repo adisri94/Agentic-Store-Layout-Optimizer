@@ -1063,6 +1063,31 @@ Sprints 3–5 (per D-025) are unchanged; only the Sprint 2 grouping is subdivide
 
 ---
 
+## D-040 · Adaptive Minimum-Supporting-Baskets Guard
+
+| Field | Value |
+|-------|-------|
+| **Date** | 13 Aug 2026 |
+| **Category** | Technology · Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Make the T-014 guard (US-2A.5) **adaptive to slice size**. The configured threshold (default 5) applies on large slices; on small slices (few baskets — e.g. a single store × a narrow context) the effective threshold eases down toward a **hard floor of 2**, via `effective_min_baskets(n_baskets, configured) = max(2, min(configured, round(0.02 · n_baskets)))`. The service enables this (`adaptive_guard=True`); the engine default stays non-adaptive.
+
+**Rationale:**
+- Surfaced during Sprint 2A review: with a fixed threshold of 5, narrow context slices on the small dataset (weekend ≈20 baskets, rainy ≈9) returned **no** recommendations, which undercut the headline "toggle weather → watch it change" demo moment.
+- Simply lowering/removing the guard would reintroduce the thin-evidence, one-basket "50×" problem T-014 exists to prevent.
+- The floor of 2 preserves T-014's guarantee (single-basket rules always excluded) while letting small slices show evidence-backed pairs.
+
+**Alternatives Considered:**
+- *Keep the fixed guard; require full data for the demo* — rejected: brittle demo UX; easy to forget.
+- *Weaken the guard globally* — rejected: reintroduces thin-evidence rules on full data.
+
+**Impact:** `mba_core.engine` gains `effective_min_baskets` + a `mine_recommendations(adaptive_guard=...)` flag; `get_recommendations` and the upload path pass `adaptive_guard=True`. Refines the delivered US-2A.5 behaviour (logged during 2A review, before sign-off).
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.

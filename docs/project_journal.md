@@ -497,6 +497,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `f455e3e` — Sprint 2A US-2A.7: UI context selectors + cannibalization view
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.7) |
+
+**Files changed:** `ui/api_client.py`, `ui/formatting.py`, `ui/modes/category_manager.py`, `test_formatting.py`.
+
+**Summary:** UI context selectors (time-of-day/day-type/weather/promo) that drive context-aware recommendations, an applied-context banner, and a "cannibalization pairs (avoid co-placing)" section. Completes Sprint 2A dev (US-2A.1–2A.7). 73 tests pass.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._
