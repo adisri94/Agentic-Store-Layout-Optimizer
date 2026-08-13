@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from api.auth import verify_api_key
 from api.schemas import GovernedRecommendation, RecommendationRequest
 from services.affinity_optimization import (
+    get_negative_associations,
     get_recommendations,
     get_recommendations_for_transactions,
     missing_pos_columns,
@@ -34,6 +35,28 @@ def post_recommendations(request: RecommendationRequest) -> list[GovernedRecomme
         store_id=request.store_id,
         category=request.category,
         top_k=request.top_k,
+        context=request.context() or None,
+    )
+
+
+@router.post(
+    "/recommendations/negatives",
+    response_model=list[GovernedRecommendation],
+    dependencies=[Depends(verify_api_key)],
+)
+def post_negative_associations(request: RecommendationRequest) -> list[GovernedRecommendation]:
+    """Return governed negative associations (cannibalization pairs) — US-2A.4/2A.6.
+
+    Args:
+        request: Same body as recommendations (store_id, top_k, optional context).
+
+    Returns:
+        Governed negative associations, most-negative first.
+    """
+    return get_negative_associations(
+        store_id=request.store_id,
+        top_k=request.top_k,
+        context=request.context() or None,
     )
 
 

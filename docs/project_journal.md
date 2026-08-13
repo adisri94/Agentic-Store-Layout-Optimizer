@@ -469,6 +469,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `3014125` — Sprint 2A US-2A.5: minimum-supporting-baskets guard (T-014)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.5) |
+
+**Files changed:** `mba_core/engine.py`, `service.py`, `config.py`, `test_min_baskets_guard.py`.
+
+**Summary:** T-014 guard — `mine_recommendations` gained `min_supporting_baskets`; `get_recommendations` and the upload path enforce `settings.min_supporting_baskets` (default 5), dropping thin-evidence high-lift rules on small store/context slices. 69 tests pass, no regressions.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._

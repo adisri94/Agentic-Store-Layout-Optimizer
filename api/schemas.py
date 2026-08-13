@@ -68,6 +68,21 @@ class RecommendationRequest(BaseModel):
     store_id: str
     category: str | None = None
     top_k: int = 20
+    # Optional context slice (Sprint 2A, US-2A.6). Omitting all = Sprint 1 behaviour.
+    time_of_day: str | None = None
+    day_type: str | None = None
+    weather: str | None = None
+    promo: bool | None = None
+
+    def context(self) -> dict:
+        """Return the non-empty context slice from the optional fields."""
+        raw = {
+            "time_of_day": self.time_of_day,
+            "day_type": self.day_type,
+            "weather": self.weather,
+            "promo": self.promo,
+        }
+        return {key: value for key, value in raw.items() if value is not None}
 
 
 class PolicyResult(BaseModel):

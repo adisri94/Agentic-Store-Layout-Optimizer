@@ -135,6 +135,42 @@ def test_upload_missing_columns_rejected(client: TestClient):
     assert "basket_id" in resp.json()["error"]["message"]
 
 
+def test_recommendations_with_context_echoes_it(client: TestClient):
+    """TC-2A.6.1 — a context slice is accepted and echoed on the results."""
+    resp = client.post(
+        "/api/v1/recommendations",
+        json={"store_id": "STR-0001", "top_k": 10, "day_type": "weekday"},
+        headers=HEADERS,
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    if body:  # context is echoed per recommendation
+        assert body[0]["context"].get("day_type") == "weekday"
+
+
+def test_recommendations_without_context_backward_compatible(client: TestClient):
+    """TC-2A.6.2 — omitting context behaves like Sprint 1 (200, list)."""
+    resp = client.post(
+        "/api/v1/recommendations", json={"store_id": "STR-0001", "top_k": 5}, headers=HEADERS
+    )
+    assert resp.status_code == 200
+    assert isinstance(resp.json(), list)
+
+
+def test_negative_associations_endpoint(client: TestClient):
+    """TC-2A.6.3 — negatives endpoint returns a governed, labelled result set."""
+    resp = client.post(
+        "/api/v1/recommendations/negatives", json={"store_id": "STR-0001", "top_k": 10},
+        headers=HEADERS,
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert isinstance(body, list)
+    for item in body:
+        assert item["audit_id"]
+        assert item["context"].get("association") == "negative"
+
+
 def test_upload_does_not_persist_parquet(client: TestClient, seeded_data_dir: Path):
     """TC-1.12.3 — an upload does not create/modify any Parquet sample (in-memory only)."""
     samples = seeded_data_dir / "samples"
