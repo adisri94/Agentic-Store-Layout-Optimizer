@@ -7,6 +7,7 @@ through the governance service before returning.
 """
 
 from services.affinity_optimization.service import (
+    get_negative_associations,
     get_product_catalog,
     get_recommendations,
     get_recommendations_for_transactions,
@@ -14,6 +15,7 @@ from services.affinity_optimization.service import (
 )
 
 __all__ = [
+    "get_negative_associations",
     "get_product_catalog",
     "get_recommendations",
     "get_recommendations_for_transactions",

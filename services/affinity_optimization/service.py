@@ -16,7 +16,10 @@ from api.schemas import GovernedRecommendation
 from platform_services.data_access import load_parquet
 from platform_services.weather import get_weather_provider
 from services.affinity_optimization.contextual import apply_context_filter
-from services.affinity_optimization.mba_core import mine_recommendations
+from services.affinity_optimization.mba_core import (
+    mine_negative_associations,
+    mine_recommendations,
+)
 from services.governance import govern
 
 logger = structlog.get_logger(__name__)
@@ -141,6 +144,49 @@ def get_recommendations(
         context=applied_context or None,
         returned=len(governed),
     )
+    return governed
+
+
+def get_negative_associations(
+    store_id: str | None = None,
+    top_k: int = 20,
+    context: dict | None = None,
+    data_dir: Path | None = None,
+) -> list[GovernedRecommendation]:
+    """Return governed negative associations (cannibalization pairs) — US-2A.4.
+
+    A distinct, clearly-labelled result set (``context["association"] == "negative"``),
+    not mixed into positive recommendations. Each is governed (rationale reads as an
+    "avoid co-placement" message) and audited.
+
+    Args:
+        store_id: Restrict to a single store (``None`` = all stores).
+        top_k: Maximum number of negative associations to return.
+        context: Optional context slice (same keys as :func:`get_recommendations`).
+        data_dir: Override the data root (defaults to ``settings.data_dir``).
+
+    Returns:
+        Up to ``top_k`` governed negative associations, most-negative (lowest lift) first.
+    """
+    transactions = load_parquet("pos_transactions", data_dir=data_dir)
+    products = load_parquet("product_master", data_dir=data_dir)
+
+    if store_id is not None:
+        transactions = transactions[transactions["store_id"] == store_id]
+
+    applied_context: dict = {}
+    if context:
+        transactions, applied_context = apply_context_filter(
+            transactions, context, get_weather_provider()
+        )
+
+    raw = mine_negative_associations(transactions, top_k=top_k)
+    for rec in raw:
+        rec.context = {**rec.context, **applied_context}
+
+    gov_context = _build_context(products)
+    governed = [govern(rec, gov_context, data_dir=data_dir) for rec in raw]
+    logger.info("affinity.get_negative_associations", store_id=store_id, returned=len(governed))
     return governed
 
 

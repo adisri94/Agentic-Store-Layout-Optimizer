@@ -2,7 +2,8 @@
 
 from services.affinity_optimization.mba_core.engine import (
     baskets_from_transactions,
+    mine_negative_associations,
     mine_recommendations,
 )
 
-__all__ = ["baskets_from_transactions", "mine_recommendations"]
+__all__ = ["baskets_from_transactions", "mine_negative_associations", "mine_recommendations"]

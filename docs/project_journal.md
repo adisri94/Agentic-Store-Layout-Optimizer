@@ -441,6 +441,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 
 ---
 
+### `ef6a8e3` — Sprint 2A US-2A.3: context-aware recommendations
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.3) |
+
+**Files changed:** `contextual/enrichment.py` (+`apply_context_filter`), `contextual/__init__.py`, `service.py` (context param), `test_contextual_recommendations.py`.
+
+**Summary:** Context-aware recommendations — `apply_context_filter` slices baskets to a chosen context (time/day/weather/promo); `get_recommendations(context=...)` records the applied context on each recommendation, still governs every one, and reproduces the Sprint 1 baseline when omitted. 65 tests pass.
+
+---
+
 ## Sprint 2B — #6 Multi-Objective Optimization
 
 _No commits yet. Backlog `sprint_2b_backlog.md`; begins after Sprint 2A._

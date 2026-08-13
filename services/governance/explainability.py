@@ -24,6 +24,13 @@ def _build_template_rationale(recommendation: Recommendation, context: dict) -> 
     names: dict[str, str] = context.get("product_names", {})
     name_a = names.get(recommendation.sku_a, recommendation.sku_a)
     name_b = names.get(recommendation.sku_b, recommendation.sku_b)
+    if recommendation.lift < 1.0:
+        # Negative association / cannibalization (US-2A.4): an "avoid" message.
+        return (
+            f"Avoid co-placing {name_a} and {name_b}: they are bought together less "
+            f"often than chance would predict (lift {recommendation.lift:.2f}), "
+            f"based on {recommendation.contributing_baskets:,} comparable transactions."
+        )
     return (
         f"Recommended because customers who buy {name_a} are "
         f"{recommendation.lift:.1f}x more likely to also buy {name_b}, "

@@ -125,3 +125,57 @@ def mine_recommendations(
         returned=min(top_k, len(recommendations)),
     )
     return recommendations[:top_k]
+
+
+def mine_negative_associations(
+    transactions: pd.DataFrame,
+    algorithm: Algorithm = "fpgrowth",
+    top_k: int = 20,
+    min_support: float = 0.01,
+    max_lift: float = 0.8,
+) -> list[Recommendation]:
+    """Mine negative associations (cannibalization): pairs bought together < chance.
+
+    These are pairs that co-occur but with **lift below** ``max_lift`` (i.e. less
+    often than independence would predict) — candidates to avoid co-placing.
+
+    Args:
+        transactions: POS Transactions DataFrame.
+        algorithm: Frequent-itemset algorithm.
+        top_k: Maximum number of negative associations to return.
+        min_support: Minimum itemset support (they must still co-occur enough to score).
+        max_lift: Upper lift bound; only pairs with ``lift < max_lift`` are returned.
+
+    Returns:
+        Up to ``top_k`` :class:`Recommendation` objects tagged ``context={"association":
+        "negative"}``, ranked by lift ascending (most negative first). Raw — must be governed.
+    """
+    baskets = baskets_from_transactions(transactions)
+    n_baskets = len(baskets)
+    rules = _mine_rules(baskets, algorithm, min_support, min_confidence=0.0)
+
+    negatives: list[Recommendation] = []
+    for _, rule in rules.iterrows():
+        lift = float(rule["lift"])
+        if lift >= max_lift:
+            continue
+        sku_a = next(iter(rule["antecedents"]))
+        sku_b = next(iter(rule["consequents"]))
+        support = float(rule["support"])
+        negatives.append(
+            Recommendation(
+                recommendation_id=f"neg-{sku_a}-{sku_b}",
+                sku_a=sku_a,
+                sku_b=sku_b,
+                placement_type="adjacency",
+                lift=lift,
+                confidence=float(rule["confidence"]),
+                support=support,
+                contributing_baskets=round(support * n_baskets),
+                context={"association": "negative"},
+            )
+        )
+
+    negatives.sort(key=lambda rec: rec.lift)
+    logger.info("mba.mined_negatives", n_baskets=n_baskets, returned=min(top_k, len(negatives)))
+    return negatives[:top_k]
