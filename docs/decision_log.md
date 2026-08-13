@@ -1040,6 +1040,29 @@ Sprints 3–5 (per D-025) are unchanged; only the Sprint 2 grouping is subdivide
 
 ---
 
+## D-039 · Sprint 2A Backlog Locked for Development
+
+| Field | Value |
+|-------|-------|
+| **Date** | 13 Aug 2026 |
+| **Category** | Process |
+| **Status** | ✅ Accepted |
+
+**Decision:** Approve and **lock** the Sprint 2A backlog (`sprint_2a_backlog.md`) — 7 user stories (US-2A.1 … US-2A.7) covering Contextual Affinity (#1): weather provider seam (synthetic default + opt-in live Open-Meteo), context enrichment, context-aware recommendations, negative-association detection, the T-014 min-baskets guard, and API/UI wiring. Development implements exactly these stories.
+
+**Rationale:**
+- Scope is right-sized after the D-038 split; stories are traceable to `Enhancement_DeepDive` §3.1 and `architecture.md` §4.1.
+- Locking sets the acceptance-criteria contract before coding (as with D-032 for Sprint 1).
+
+**Alternatives Considered:**
+- *Start coding without a lock* — rejected: loses the Definition-of-Done contract.
+
+**Impact:** Sprint 2A scope is frozen; changes require a new `D-XXX`. Build order: US-2A.1 → 2A.2 → 2A.3 → 2A.4 → 2A.5 → 2A.6 → 2A.7. Sprint 2B remains a draft until 2A completes.
+
+**Owner:** Aditya Srivastava
+
+---
+
 # PART 6 — TENTATIVE / DEFERRED DECISIONS
 
 These are consciously deferred to Phase 2+ and will be revisited as clarity emerges.

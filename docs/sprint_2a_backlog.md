@@ -15,7 +15,7 @@
 | **Product Name** | Store Layout (Product Placement) Optimizer Tool |
 | **Document Type** | Sprint Backlog (User Stories · Acceptance Criteria · Test Cases) |
 | **Sprint** | Sprint 2A — Contextual Affinity Modeling (#1) |
-| **Status** | 🔍 Draft for Owner Review |
+| **Status** | 🔒 Approved & Locked for Development (13 Aug 2026) — see `decision_log.md` D-039 |
 | **Owner** | Aditya Srivastava, Senior Consultant, Cognizant |
 | **Last Updated** | 23 July 2026 |
 | **Related Docs** | `architecture.md` §4.1 (contextual) · `Enhancement_DeepDive` §3.1 · `decision_log.md` D-025, D-036 (T-014), D-037, D-038 · `governance_charter.md` |

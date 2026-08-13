@@ -42,7 +42,7 @@
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
 | **Sprint 1** | Core MBA + #9 Explainability & Governance | ✅ Complete — signed off 23 Jul 2026 (D-036); US-1.1–US-1.14 |
-| **Sprint 2A** | #1 Contextual Affinity | 🔍 Backlog drafted (D-038 split); awaiting lock |
+| **Sprint 2A** | #1 Contextual Affinity | 🔄 In progress — backlog locked 13 Aug 2026 (D-039) |
 | **Sprint 2B** | #6 Multi-Objective Optimization | 🔍 Backlog drafted (D-038 split); starts after 2A |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -381,7 +381,21 @@ Planned scope: Apriori/FP-Growth engine over synthetic POS baskets, the governan
 
 ## Sprint 2A — #1 Contextual Affinity
 
-_No commits yet. Backlog `sprint_2a_backlog.md` (split from Sprint 2 per D-038); to be locked before coding. Weather uses a synthetic default + optional live Open-Meteo provider (D-037)._
+_Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synthetic default + optional live Open-Meteo provider (D-037). Entries are added here as 2A work lands on `main`._
+
+---
+
+### `f29cbe8` — Split Sprint 2 into 2A (#1) / 2B (#6); revise weather to dual provider
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2 planning |
+
+**Files changed:** 9 docs, +409 / −13 — new `sprint_2a_backlog.md` / `sprint_2b_backlog.md`; D-037 revised, D-038 added; CLAUDE.md §10, roadmap, Product Vision, demo_script, Sprint 1 docs updated to 2A/2B.
+
+**Summary:** Split Sprint 2 into 2A (#1 Contextual Affinity + T-014 guard) and 2B (#6 Multi-Objective) per D-038, and revised the weather decision (D-037) to a dual provider — synthetic default plus an opt-in live Open-Meteo provider (verified reachable through Zscaler; CA trust via `truststore`) with graceful fallback. Planning only; no code.
 
 ---
 
