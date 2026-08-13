@@ -18,12 +18,35 @@ def _headers() -> dict[str, str]:
 
 
 def fetch_recommendations(
-    store_id: str, category: str | None = None, top_k: int = 20
+    store_id: str,
+    category: str | None = None,
+    top_k: int = 20,
+    context: dict | None = None,
 ) -> list[dict]:
     """POST /api/v1/recommendations and return the governed recommendations."""
+    body = {"store_id": store_id, "category": category, "top_k": top_k}
+    if context:
+        body.update(context)
     response = requests.post(
         f"{settings.api_base_url}/api/v1/recommendations",
-        json={"store_id": store_id, "category": category, "top_k": top_k},
+        json=body,
+        headers=_headers(),
+        timeout=_TIMEOUT_SECONDS,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_negative_associations(
+    store_id: str, top_k: int = 20, context: dict | None = None
+) -> list[dict]:
+    """POST /api/v1/recommendations/negatives and return governed cannibalization pairs."""
+    body = {"store_id": store_id, "top_k": top_k}
+    if context:
+        body.update(context)
+    response = requests.post(
+        f"{settings.api_base_url}/api/v1/recommendations/negatives",
+        json=body,
         headers=_headers(),
         timeout=_TIMEOUT_SECONDS,
     )

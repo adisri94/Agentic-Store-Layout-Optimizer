@@ -13,14 +13,40 @@ from pathlib import Path
 import requests
 import streamlit as st
 
-from ui.api_client import fetch_products, fetch_recommendations, upload_transactions
+from ui.api_client import (
+    fetch_negative_associations,
+    fetch_products,
+    fetch_recommendations,
+    upload_transactions,
+)
 from ui.formatting import (
     ALL_CATEGORIES,
     category_options,
+    context_summary,
     name_map,
     recommendation_display_row,
     sku_label,
 )
+
+_ANY = "Any"
+_TIME_OF_DAY = [_ANY, "morning", "afternoon", "evening", "night"]
+_DAY_TYPE = [_ANY, "weekday", "weekend"]
+_WEATHER = [_ANY, "sunny", "rainy", "cold", "hot", "mild"]
+_PROMO = [_ANY, "Yes", "No"]
+
+
+def _build_context(time_of_day: str, day_type: str, weather: str, promo: str) -> dict:
+    """Assemble the API context dict from the selector values ('Any' = omit)."""
+    context: dict = {}
+    if time_of_day != _ANY:
+        context["time_of_day"] = time_of_day
+    if day_type != _ANY:
+        context["day_type"] = day_type
+    if weather != _ANY:
+        context["weather"] = weather
+    if promo != _ANY:
+        context["promo"] = promo == "Yes"
+    return context
 
 _SAMPLE_CSV = Path(__file__).resolve().parent.parent / "sample_transactions.csv"
 
@@ -70,17 +96,44 @@ def render() -> None:
     category = col2.selectbox("Category", category_options(products))
     top_k = col3.slider("How many", min_value=1, max_value=20, value=10)
 
+    st.caption("Context (Sprint 2A) — narrow to a situation and watch the ranking change:")
+    ctx1, ctx2, ctx3, ctx4 = st.columns(4)
+    time_of_day = ctx1.selectbox("Time of day", _TIME_OF_DAY)
+    day_type = ctx2.selectbox("Day type", _DAY_TYPE)
+    weather = ctx3.selectbox("Weather", _WEATHER)
+    promo = ctx4.selectbox("Promo", _PROMO)
+    context = _build_context(time_of_day, day_type, weather, promo)
+    category_arg = None if category == ALL_CATEGORIES else category
+
     if st.button("Get recommendations"):
         try:
             recommendations = fetch_recommendations(
-                store_id=store_id,
-                category=None if category == ALL_CATEGORIES else category,
-                top_k=top_k,
+                store_id=store_id, category=category_arg, top_k=top_k, context=context or None
             )
         except requests.RequestException as exc:
             st.error(f"Could not reach the API: {exc}")
         else:
+            if context:
+                st.info(f"Context applied: {context_summary(context)}")
             _render_results(recommendations, names)
+
+    if st.button("Show cannibalization pairs (avoid co-placing)"):
+        try:
+            negatives = fetch_negative_associations(
+                store_id=store_id, top_k=top_k, context=context or None
+            )
+        except requests.RequestException as exc:
+            st.error(f"Could not reach the API: {exc}")
+        else:
+            if not negatives:
+                st.info("No negative associations found for that selection.")
+            else:
+                st.warning(f"{len(negatives)} pair(s) bought together less than chance:")
+                for rec in negatives:
+                    label = f"{sku_label(rec['sku_a'], names)}  ✕  {sku_label(rec['sku_b'], names)}"
+                    with st.expander(f"{label}   (lift {rec['lift']:.2f})"):
+                        st.write(rec["rationale"])
+                        st.caption(f"Audit id: {rec['audit_id']}")
 
     st.divider()
 

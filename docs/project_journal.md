@@ -42,7 +42,7 @@
 |--------|-------|--------|
 | **Foundation** | Vision, Data Contract, Architecture, Repo/CI setup, documentation | ✅ Complete |
 | **Sprint 1** | Core MBA + #9 Explainability & Governance | ✅ Complete — signed off 23 Jul 2026 (D-036); US-1.1–US-1.14 |
-| **Sprint 2A** | #1 Contextual Affinity | 🔄 In progress — backlog locked 13 Aug 2026 (D-039) |
+| **Sprint 2A** | #1 Contextual Affinity | 🔄 In review — US-2A.1–US-2A.7 done; awaiting sign-off |
 | **Sprint 2B** | #6 Multi-Objective Optimization | 🔍 Backlog drafted (D-038 split); starts after 2A |
 | **Sprint 3** | #4 Omnichannel Affinity + #5 Segmentation | ⏳ Not started |
 | **Sprint 4** | #3 GenAI Planogram Agent | ⏳ Not started |
@@ -480,6 +480,20 @@ _Backlog locked 13 Aug 2026 (D-039, `sprint_2a_backlog.md`). Weather uses a synt
 **Files changed:** `mba_core/engine.py`, `service.py`, `config.py`, `test_min_baskets_guard.py`.
 
 **Summary:** T-014 guard — `mine_recommendations` gained `min_supporting_baskets`; `get_recommendations` and the upload path enforce `settings.min_supporting_baskets` (default 5), dropping thin-evidence high-lift rules on small store/context slices. 69 tests pass, no regressions.
+
+---
+
+### `614d94b` — Sprint 2A US-2A.6: API context params + negatives endpoint
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-13 |
+| **Author** | Srivastava &lt;2271124@cognizant.com&gt; |
+| **Sprint** | Sprint 2A (US-2A.6) |
+
+**Files changed:** `api/schemas.py` (RecommendationRequest context fields), `api/routes/recommendations.py` (context passthrough + negatives endpoint), `test_api.py`.
+
+**Summary:** API context support — `RecommendationRequest` gained optional `time_of_day`/`day_type`/`weather`/`promo` with a `context()` helper; `POST /recommendations` passes the slice through, and a new `POST /recommendations/negatives` returns governed cannibalization pairs. Backward compatible. 72 tests pass.
 
 ---
 

@@ -6,10 +6,18 @@ from ui.formatting import (
     ALL_CATEGORIES,
     audit_display_row,
     category_options,
+    context_summary,
     name_map,
     recommendation_display_row,
     sku_label,
 )
+
+
+def test_context_summary():
+    """TC-2A.7.1 — a context dict renders as a readable summary, ignoring the tag."""
+    assert context_summary({"day_type": "weekend", "weather": "rainy"}) == "weekend · rainy"
+    assert context_summary({"association": "negative", "day_type": "weekday"}) == "weekday"
+    assert context_summary({}) == ""
 
 _PRODUCTS = [
     {"sku_id": "SKU-1", "product_name": "Running Shoes", "category_l1": "Footwear"},

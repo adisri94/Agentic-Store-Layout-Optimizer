@@ -22,6 +22,16 @@ def category_options(products: list[dict]) -> list[str]:
     return [ALL_CATEGORIES, *categories]
 
 
+def context_summary(context: dict) -> str:
+    """Render a context dict as a readable one-line summary (US-2A.7).
+
+    Example: ``{"day_type": "weekend", "weather": "rainy"}`` -> ``"weekend · rainy"``.
+    Ignores the internal ``association`` tag; returns ``""`` for an empty context.
+    """
+    parts = [str(v) for k, v in context.items() if k != "association" and v is not None]
+    return " · ".join(parts)
+
+
 def name_map(products: list[dict]) -> dict[str, str]:
     """Build a ``sku_id -> product_name`` lookup from the product catalog (US-1.14)."""
     return {p["sku_id"]: p["product_name"] for p in products}
